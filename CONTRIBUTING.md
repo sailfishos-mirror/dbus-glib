@@ -99,6 +99,13 @@ Version 0.(N+1), where *N* is even (divisible by 2), identifies a
 development snapshot leading to version 0.(N+2). Odd-numbered versions
 should never be used as releases.
 
+## Contributing to dbus-gmain
+
+The `dbus-gmain` subproject is shared by `dbus-glib` and `dbus-python`,
+and has its own contributing guidelines (which are similar to these).
+Please see [dbus-gmain/CONTRIBUTING.md](dbus-gmain/CONTRIBUTING.md)
+for details.
+
 ## Information for maintainers
 
 This section is not directly relevant to infrequent contributors.
