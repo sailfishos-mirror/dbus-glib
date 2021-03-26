@@ -1,7 +1,7 @@
 dnl -*- mode: m4 -*-
 AC_PREREQ(2.52)
 
-AC_INIT([dbus-glib], [0.111],
+AC_INIT([dbus-glib], [0.112],
   [https://bugs.freedesktop.org/enter_bug.cgi?product=dbus&component=GLib])
 
 AC_CONFIG_AUX_DIR([build-aux])
@@ -31,7 +31,7 @@ LT_CURRENT=5
 
 ## increment any time the source changes; set to
 ##  0 if you increment CURRENT
-LT_REVISION=4
+LT_REVISION=5
 
 ## increment if any interfaces have been added; set to 0
 ## if any interfaces have been changed or removed. removal has

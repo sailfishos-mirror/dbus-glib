@@ -1,7 +1,9 @@
 dbus-glib is deprecated, please use GDBus in new GLib-based projects.
 
-dbus-glib 0.112 (UNRELEASED)
+dbus-glib 0.112 (2021-03-26)
 ============================
+
+The “haunted teacup” release.
 
 dbus-glib version control is now hosted on freedesktop.org's Gitlab
 installation, and bug reports and feature requests have switched from
@@ -35,6 +37,9 @@ Enhancements:
 • Improve man page (dbus-glib!1, Alan Coopersmith)
 
 • Add test coverage for fd.o#80557 (dbus-glib#1, Simon McVittie)
+
+• Use more modern GLib assertions in unit tests
+  (dbus-glib#16, dbus-glib!3, dbus-glib!4; Simon McVittie)
 
 • Improve continuous integration to be run by GitLab in addition to
   Travis-CI (Simon McVittie)
