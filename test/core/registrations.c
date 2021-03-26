@@ -127,7 +127,7 @@ test_lookup (Fixture *f,
   g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
       f->object);
   /* this was briefly broken while fixing fd.o#5688 */
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/bar") == NULL);
+  g_assert_null (dbus_g_connection_lookup_g_object (f->bus, "/bar"));
 }
 
 static void
@@ -141,7 +141,7 @@ test_unregister (Fixture *f,
   g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
       f->object);
   dbus_g_connection_unregister_g_object (f->bus, f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") == NULL);
+  g_assert_null (dbus_g_connection_lookup_g_object (f->bus, "/foo"));
 }
 
 static void
@@ -160,9 +160,9 @@ test_unregister_on_last_unref (Fixture *f,
   g_object_unref (f->object);
   f->object = NULL;
 
-  g_assert (weak_pointer == NULL);
+  g_assert_null (weak_pointer);
 
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") == NULL);
+  g_assert_null (dbus_g_connection_lookup_g_object (f->bus, "/foo"));
 }
 
 static void
@@ -176,7 +176,7 @@ test_unregister_on_forced_dispose (Fixture *f,
    * this at home) */
   g_object_run_dispose (f->object);
 
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") == NULL);
+  g_assert_null (dbus_g_connection_lookup_g_object (f->bus, "/foo"));
 }
 
 static void
@@ -198,7 +198,7 @@ test_reregister (Fixture *f,
 
   /* This would critical in 0.84. */
   dbus_g_connection_unregister_g_object (f->bus, f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") == NULL);
+  g_assert_null (dbus_g_connection_lookup_g_object (f->bus, "/foo"));
 }
 
 static DBusHandlerResult
@@ -222,7 +222,7 @@ frobnicate_cb (DBusConnection *conn,
           g_assert_cmpstr (sender, ==, dbus_bus_get_unique_name (
                 dbus_g_connection_get_connection (f->bus)));
 
-          g_assert (f->frobnicate1_message == NULL);
+          g_assert_null (f->frobnicate1_message);
           f->frobnicate1_message = dbus_message_ref (message);
         }
       else
@@ -231,7 +231,7 @@ frobnicate_cb (DBusConnection *conn,
           g_assert_cmpstr (sender, ==, dbus_bus_get_unique_name (
                 dbus_g_connection_get_connection (f->bus2)));
 
-          g_assert (f->frobnicate2_message == NULL);
+          g_assert_null (f->frobnicate2_message);
           f->frobnicate2_message = dbus_message_ref (message);
         }
     }
@@ -283,7 +283,7 @@ test_twice (Fixture *f,
   while (f->frobnicate2_message == NULL)
     g_main_context_iteration (NULL, TRUE);
 
-  g_assert (f->frobnicate1_message == NULL);
+  g_assert_null (f->frobnicate1_message);
   dbus_message_unref (f->frobnicate2_message);
   f->frobnicate2_message = NULL;
 }
@@ -345,7 +345,7 @@ test_clean_slate (Fixture *f,
   /* check that this wasn't received anyway, which would indicate that
    * either unregistration from /foo was unsuccessful, or the double
    * emission mentioned above was seen */
-  g_assert (f->frobnicate1_message == NULL);
+  g_assert_null (f->frobnicate1_message);
 
   dbus_message_unref (f->frobnicate2_message);
   f->frobnicate2_message = NULL;

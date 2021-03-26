@@ -69,7 +69,7 @@ new_conn_cb (DBusServer *server,
 {
   Fixture *f = data;
 
-  g_assert (f->server_conn == NULL);
+  g_assert_null (f->server_conn);
   f->server_conn = dbus_connection_ref (server_conn);
   dbus_connection_setup_with_g_main (server_conn, NULL);
   f->server_gconn = dbus_connection_get_g_connection (server_conn);
@@ -100,7 +100,7 @@ setup (Fixture *f,
       new_conn_cb, f, NULL);
   dbus_server_setup_with_g_main (f->server, NULL);
 
-  g_assert (f->server_conn == NULL);
+  g_assert_null (f->server_conn);
 
   f->client_conn = dbus_connection_open_private (
       dbus_server_get_address (f->server), &f->e);
@@ -187,7 +187,7 @@ test_disconnect (Fixture *f,
 
   fail = dbus_g_proxy_begin_call (f->proxy, "DoNothing", call_cb, f, NULL,
       G_TYPE_INVALID);
-  g_assert (fail == NULL);
+  g_assert_null (fail);
 
   ok = dbus_g_proxy_end_call (f->proxy, fail, &error,
       G_TYPE_INVALID);

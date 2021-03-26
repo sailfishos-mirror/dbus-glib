@@ -273,7 +273,7 @@ echo_received_cb (DBusGProxy *proxy,
   char *echo_data;
 
   g_assert (call == echo_call);
-  g_assert (data == NULL);
+  g_assert_null (data);
 
   error = NULL;
   echo_data = NULL;
@@ -604,7 +604,7 @@ main (int argc, char **argv)
       g_print ("  %s\n", name_list[i]);
       ++i;
     }
-  g_assert (name_list[i] == NULL);
+  g_assert_null (name_list[i]);
 
   g_strfreev (name_list);
 
@@ -2278,7 +2278,7 @@ main (int argc, char **argv)
 
   /* Now, call disable_legacy_property_access */
 
-  g_assert (proxy == NULL);
+  g_assert_null (proxy);
   proxy = dbus_g_proxy_new_for_name_owner (connection,
                                            "org.freedesktop.DBus.GLib.TestService",
                                            "/org/freedesktop/DBus/GLib/Tests/MyTestObject",
