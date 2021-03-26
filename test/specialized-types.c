@@ -447,9 +447,9 @@ test_suo (Fixture *f G_GNUC_UNUSED,
                               2, &path,
                               G_MAXUINT);
 
-      g_assert (0 == strcmp (string, "foo"));
+      g_assert_cmpstr (string, ==, "foo");
       g_assert (intval == 42);
-      g_assert (0 == strcmp (path, "/bar/moo/foo/baz"));
+      g_assert_cmpstr (path, ==, "/bar/moo/foo/baz");
     }
 
     g_value_unset (&val);

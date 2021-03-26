@@ -2029,7 +2029,7 @@ assert_type_maps_to (GType gtype, const char *expected_sig)
   char *sig;
   sig = _dbus_gtype_to_signature (gtype);
   g_assert_nonnull (sig);
-  g_assert (!strcmp (expected_sig, sig));
+  g_assert_cmpstr (expected_sig, ==, sig);
   g_free (sig);
 }
 
@@ -2075,14 +2075,14 @@ _dbus_gvalue_test (const char *test_data_dir)
 
   rectype = dbus_g_type_get_collection ("GArray", G_TYPE_UINT);
   g_assert (rectype != G_TYPE_INVALID);
-  g_assert (!strcmp (g_type_name (rectype), "GArray_guint_"));
+  g_assert_cmpstr (g_type_name (rectype), ==, "GArray_guint_");
 
   type = _dbus_gtype_from_signature ("au", TRUE);
   g_assert (type == rectype);
 
   rectype = dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_STRING);
   g_assert (rectype != G_TYPE_INVALID);
-  g_assert (!strcmp (g_type_name (rectype), "GHashTable_gchararray+gchararray_"));
+  g_assert_cmpstr (g_type_name (rectype), ==, "GHashTable_gchararray+gchararray_");
 
   type = _dbus_gtype_from_signature ("a{ss}", TRUE);
   g_assert (type == rectype);

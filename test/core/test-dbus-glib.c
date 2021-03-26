@@ -210,11 +210,11 @@ sig0_signal_handler (DBusGProxy  *proxy,
 {
   n_times_sig0_received += 1;
 
-  g_assert (!strcmp (str0, "foo"));
+  g_assert_cmpstr (str0, ==, "foo");
 
   g_assert (val == 22);
 
-  g_assert (!strcmp (str1, "moo"));
+  g_assert_cmpstr (str1, ==, "moo");
 
   g_print ("Got Sig0 signal\n");
 
@@ -230,11 +230,11 @@ sig1_signal_handler (DBusGProxy  *proxy,
 {
   n_times_sig1_received += 1;
 
-  g_assert (!strcmp (str0, "baz"));
+  g_assert_cmpstr (str0, ==, "baz");
 
   g_assert (G_VALUE_HOLDS_STRING (value));
 
-  g_assert (!strcmp (g_value_get_string (value), "bar"));
+  g_assert_cmpstr (g_value_get_string (value), ==, "bar");
 
   g_print ("Got Sig1 signal\n");
 
@@ -252,9 +252,9 @@ sig2_signal_handler (DBusGProxy  *proxy,
   g_assert (g_hash_table_size (table) == 2);
 
   g_assert_nonnull (g_hash_table_lookup (table, "baz"));
-  g_assert (!strcmp (g_hash_table_lookup (table, "baz"), "cow"));
+  g_assert_cmpstr (g_hash_table_lookup (table, "baz"), ==, "cow");
   g_assert_nonnull (g_hash_table_lookup (table, "bar"));
-  g_assert (!strcmp (g_hash_table_lookup (table, "bar"), "foo"));
+  g_assert_cmpstr (g_hash_table_lookup (table, "bar"), ==, "foo");
 
   g_print ("Got Sig2 signal\n");
 
@@ -299,7 +299,7 @@ increment_received_cb (DBusGProxy *proxy,
   GError *error;
   guint val;
 
-  g_assert (!strcmp (data, "moo"));
+  g_assert_cmpstr (data, ==, "moo");
 
   error = NULL;
   if (!dbus_g_proxy_end_call (proxy, call, &error,
@@ -1206,8 +1206,8 @@ main (int argc, char **argv)
     g_assert (g_value_get_uint (g_value_array_get_nth (vals_ret, 0)) == 43);
     
     g_assert (G_VALUE_TYPE (g_value_array_get_nth (vals_ret, 1)) == DBUS_TYPE_G_OBJECT_PATH);
-    g_assert (!strcmp ("/org/freedesktop/DBus/GLib/Tests/MyTestObject2",
-		       g_value_get_boxed (g_value_array_get_nth (vals_ret, 1))));
+    g_assert_cmpstr ("/org/freedesktop/DBus/GLib/Tests/MyTestObject2", ==,
+                     g_value_get_boxed (g_value_array_get_nth (vals_ret, 1)));
 
     g_free (val);
     g_value_array_free (vals);
@@ -1266,12 +1266,12 @@ main (int argc, char **argv)
     val = g_hash_table_lookup (ret_table, "foo");
     g_assert_nonnull (val);
     g_assert (G_VALUE_HOLDS_STRING (val));
-    g_assert (!strcmp ("42", g_value_get_string (val)));
+    g_assert_cmpstr ("42", ==, g_value_get_string (val));
 
     val = g_hash_table_lookup (ret_table, "bar");
     g_assert_nonnull (val);
     g_assert (G_VALUE_HOLDS_STRING (val));
-    g_assert (!strcmp ("hello", g_value_get_string (val)));
+    g_assert_cmpstr ("hello", ==, g_value_get_string (val));
 
     g_hash_table_destroy (table);
     g_hash_table_destroy (ret_table);
@@ -1529,15 +1529,15 @@ main (int argc, char **argv)
 
     val = g_hash_table_lookup (subtable, "foo");
     g_assert_nonnull (val);
-    g_assert (!strcmp ("dict1 1", val));
+    g_assert_cmpstr ("dict1 1", ==, val);
 
     val = g_hash_table_lookup (subtable, "bar");
     g_assert_nonnull (val);
-    g_assert (!strcmp ("dict1 2", val));
+    g_assert_cmpstr ("dict1 2", ==, val);
 
     val = g_hash_table_lookup (subtable, "baz");
     g_assert_nonnull (val);
-    g_assert (!strcmp ("dict1 3", val));
+    g_assert_cmpstr ("dict1 3", ==, val);
 
     subtable = g_hash_table_lookup (ret_table, "dict2");
     g_assert_nonnull (subtable);
@@ -1545,15 +1545,15 @@ main (int argc, char **argv)
 
     val = g_hash_table_lookup (subtable, "foo");
     g_assert_nonnull (val);
-    g_assert (!strcmp ("dict2 4", val));
+    g_assert_cmpstr ("dict2 4", ==, val);
 
     val = g_hash_table_lookup (subtable, "bar");
     g_assert_nonnull (val);
-    g_assert (!strcmp ("dict2 5", val));
+    g_assert_cmpstr ("dict2 5", ==, val);
 
     val = g_hash_table_lookup (subtable, "baz");
     g_assert_nonnull (val);
-    g_assert (!strcmp ("dict2 6", val));
+    g_assert_cmpstr ("dict2 6", ==, val);
 
     g_hash_table_destroy (table);
     g_hash_table_destroy (ret_table);
@@ -2075,7 +2075,7 @@ main (int argc, char **argv)
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
     g_assert (G_VALUE_HOLDS (&value, G_TYPE_STRING));
-    g_assert (!strcmp (g_value_get_string (&value), ""));
+    g_assert_cmpstr (g_value_get_string (&value), ==, "");
     g_value_unset (&value);
   }
 
@@ -2144,7 +2144,7 @@ main (int argc, char **argv)
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
     g_assert (G_VALUE_HOLDS (&value, G_TYPE_STRING));
-    g_assert (!strcmp (g_value_get_string (&value), "testing value"));
+    g_assert_cmpstr (g_value_get_string (&value), ==, "testing value");
     g_value_unset (&value);
   }
 

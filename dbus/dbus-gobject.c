@@ -3340,14 +3340,14 @@ _dbus_gobject_test (const char *test_data_dir)
 					  &(dbus_glib_internal_test_methods[1]));
   g_assert (*arg != '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
-  g_assert (!strcmp (arg_name, "x"));
+  g_assert_cmpstr (arg_name, ==, "x");
   g_assert (arg_in == TRUE);
-  g_assert (!strcmp (arg_signature, "u"));
+  g_assert_cmpstr (arg_signature, ==, "u");
   g_assert (*arg != '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
   g_assert (arg_in == FALSE);
   g_assert (retval == RETVAL_NONE);
-  g_assert (!strcmp (arg_signature, "u"));
+  g_assert_cmpstr (arg_signature, ==, "u");
   g_assert (*arg == '\0');
 
   /* IncrementRetval */
@@ -3355,14 +3355,14 @@ _dbus_gobject_test (const char *test_data_dir)
 					  &(dbus_glib_internal_test_methods[2]));
   g_assert (*arg != '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
-  g_assert (!strcmp (arg_name, "x"));
+  g_assert_cmpstr (arg_name, ==, "x");
   g_assert (arg_in == TRUE);
-  g_assert (!strcmp (arg_signature, "u"));
+  g_assert_cmpstr (arg_signature, ==, "u");
   g_assert (*arg != '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
   g_assert (retval == RETVAL_NOERROR);
   g_assert (arg_in == FALSE);
-  g_assert (!strcmp (arg_signature, "u"));
+  g_assert_cmpstr (arg_signature, ==, "u");
   g_assert (*arg == '\0');
 
   /* IncrementRetvalError */
@@ -3370,14 +3370,14 @@ _dbus_gobject_test (const char *test_data_dir)
 					  &(dbus_glib_internal_test_methods[3]));
   g_assert (*arg != '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
-  g_assert (!strcmp (arg_name, "x"));
+  g_assert_cmpstr (arg_name, ==, "x");
   g_assert (arg_in == TRUE);
-  g_assert (!strcmp (arg_signature, "u"));
+  g_assert_cmpstr (arg_signature, ==, "u");
   g_assert (*arg != '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
   g_assert (retval == RETVAL_ERROR);
   g_assert (arg_in == FALSE);
-  g_assert (!strcmp (arg_signature, "u"));
+  g_assert_cmpstr (arg_signature, ==, "u");
   g_assert (*arg == '\0');
   
   /* Stringify */
@@ -3385,33 +3385,33 @@ _dbus_gobject_test (const char *test_data_dir)
 					  &(dbus_glib_internal_test_methods[8]));
   g_assert (*arg != '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
-  g_assert (!strcmp (arg_name, "val"));
+  g_assert_cmpstr (arg_name, ==, "val");
   g_assert (arg_in == TRUE);
-  g_assert (!strcmp (arg_signature, "v"));
+  g_assert_cmpstr (arg_signature, ==, "v");
   g_assert (*arg != '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
   g_assert (retval == RETVAL_NONE);
   g_assert (arg_in == FALSE);
-  g_assert (!strcmp (arg_signature, "s"));
+  g_assert_cmpstr (arg_signature, ==, "s");
   g_assert (*arg == '\0');
 
   sigdata = dbus_glib_internal_test_object_info.exported_signals;
   g_assert (*sigdata != '\0');
   sigdata = signal_iterate (sigdata, &iface, &signame);
-  g_assert (!strcmp (iface, "org.freedesktop.DBus.Tests.MyObject"));
-  g_assert (!strcmp (signame, "Frobnicate"));
+  g_assert_cmpstr (iface, ==, "org.freedesktop.DBus.Tests.MyObject");
+  g_assert_cmpstr (signame, ==, "Frobnicate");
   g_assert (*sigdata != '\0');
   sigdata = signal_iterate (sigdata, &iface, &signame);
-  g_assert (!strcmp (iface, "org.freedesktop.DBus.Tests.FooObject"));
-  g_assert (!strcmp (signame, "Sig0"));
+  g_assert_cmpstr (iface, ==, "org.freedesktop.DBus.Tests.FooObject");
+  g_assert_cmpstr (signame, ==, "Sig0");
   g_assert (*sigdata != '\0');
   sigdata = signal_iterate (sigdata, &iface, &signame);
-  g_assert (!strcmp (iface, "org.freedesktop.DBus.Tests.FooObject"));
-  g_assert (!strcmp (signame, "Sig1"));
+  g_assert_cmpstr (iface, ==, "org.freedesktop.DBus.Tests.FooObject");
+  g_assert_cmpstr (signame, ==, "Sig1");
   g_assert (*sigdata != '\0');
   sigdata = signal_iterate (sigdata, &iface, &signame);
-  g_assert (!strcmp (iface, "org.freedesktop.DBus.Tests.FooObject"));
-  g_assert (!strcmp (signame, "Sig2"));
+  g_assert_cmpstr (iface, ==, "org.freedesktop.DBus.Tests.FooObject");
+  g_assert_cmpstr (signame, ==, "Sig2");
   g_assert (*sigdata == '\0');
 
 
