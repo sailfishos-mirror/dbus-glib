@@ -169,7 +169,7 @@ frobnicate_signal_handler (DBusGProxy  *proxy,
 {
   n_times_frobnicate_received += 1;
 
-  g_assert (val == 42);
+  g_assert_cmpint (val, ==, 42);
   g_print ("Got Frobnicate signal\n");
 
   g_main_loop_quit (loop);
@@ -183,7 +183,7 @@ frobnicate_signal_handler_2 (DBusGProxy  *proxy,
 {
   n_times_frobnicate_received_2 += 1;
 
-  g_assert (val == 42);
+  g_assert_cmpint (val, ==, 42);
   g_print ("Got Frobnicate signal (again)\n");
 }
 
@@ -194,7 +194,7 @@ frobnicate_signal_handler_compat (DBusGProxy  *proxy,
 {
   n_times_compat_frobnicate_received += 1;
 
-  g_assert (val == 42);
+  g_assert_cmpint (val, ==, 42);
   g_print ("Got Frobnicate signal (compat)\n");
 
   g_main_loop_quit (loop);
@@ -212,7 +212,7 @@ sig0_signal_handler (DBusGProxy  *proxy,
 
   g_assert_cmpstr (str0, ==, "foo");
 
-  g_assert (val == 22);
+  g_assert_cmpint (val, ==, 22);
 
   g_assert_cmpstr (str1, ==, "moo");
 
@@ -249,7 +249,7 @@ sig2_signal_handler (DBusGProxy  *proxy,
 {
   n_times_sig2_received += 1;
 
-  g_assert (g_hash_table_size (table) == 2);
+  g_assert_cmpuint (g_hash_table_size (table), ==, 2);
 
   g_assert_nonnull (g_hash_table_lookup (table, "baz"));
   g_assert_cmpstr (g_hash_table_lookup (table, "baz"), ==, "cow");
@@ -1200,10 +1200,10 @@ main (int argc, char **argv)
       lose_gerror ("Failed to complete SendCar call", error);
 
     g_assert_nonnull (vals_ret);
-    g_assert (vals_ret->n_values == 2);
+    g_assert_cmpuint (vals_ret->n_values, ==, 2);
 
     g_assert (G_VALUE_HOLDS_UINT (g_value_array_get_nth (vals_ret, 0)));
-    g_assert (g_value_get_uint (g_value_array_get_nth (vals_ret, 0)) == 43);
+    g_assert_cmpuint (g_value_get_uint (g_value_array_get_nth (vals_ret, 0)), ==, 43);
     
     g_assert (G_VALUE_TYPE (g_value_array_get_nth (vals_ret, 1)) == DBUS_TYPE_G_OBJECT_PATH);
     g_assert_cmpstr ("/org/freedesktop/DBus/GLib/Tests/MyTestObject2", ==,
@@ -1261,7 +1261,7 @@ main (int argc, char **argv)
       lose_gerror ("Failed to complete ManyStringify call", error);
 
     g_assert_nonnull (ret_table);
-    g_assert (g_hash_table_size (ret_table) == 2);
+    g_assert_cmpuint (g_hash_table_size (ret_table), ==, 2);
 
     val = g_hash_table_lookup (ret_table, "foo");
     g_assert_nonnull (val);
@@ -1313,18 +1313,18 @@ main (int argc, char **argv)
     g_ptr_array_free (in_array, TRUE);
 
     g_assert_nonnull (out_array);
-    g_assert (out_array->len == 2);
+    g_assert_cmpuint (out_array->len, ==, 2);
     uints = g_ptr_array_index (out_array, 0);
     g_assert_nonnull (uints);
-    g_assert (uints->len == 3);
-    g_assert (g_array_index (uints, guint, 0) == 10);
-    g_assert (g_array_index (uints, guint, 1) == 42);
-    g_assert (g_array_index (uints, guint, 2) == 27);
+    g_assert_cmpuint (uints->len, ==, 3);
+    g_assert_cmpuint (g_array_index (uints, guint, 0), ==, 10);
+    g_assert_cmpuint (g_array_index (uints, guint, 1), ==, 42);
+    g_assert_cmpuint (g_array_index (uints, guint, 2), ==, 27);
     g_array_free (uints, TRUE);
     uints = g_ptr_array_index (out_array, 1);
     g_assert_nonnull (uints);
-    g_assert (uints->len == 1);
-    g_assert (g_array_index (uints, guint, 0) == 30);
+    g_assert_cmpuint (uints->len, ==, 1);
+    g_assert_cmpuint (g_array_index (uints, guint, 0), ==, 30);
     g_array_free (uints, TRUE);
     g_ptr_array_free (out_array, TRUE);
   }
@@ -1521,11 +1521,11 @@ main (int argc, char **argv)
       lose_gerror ("Failed to complete DictOfDicts call", error);
 
     g_assert_nonnull (ret_table);
-    g_assert (g_hash_table_size (ret_table) == 2);
+    g_assert_cmpuint (g_hash_table_size (ret_table), ==, 2);
 
     subtable = g_hash_table_lookup (ret_table, "dict1");
     g_assert_nonnull (subtable);
-    g_assert (g_hash_table_size (subtable) == 3);
+    g_assert_cmpuint (g_hash_table_size (subtable), ==, 3);
 
     val = g_hash_table_lookup (subtable, "foo");
     g_assert_nonnull (val);
@@ -1541,7 +1541,7 @@ main (int argc, char **argv)
 
     subtable = g_hash_table_lookup (ret_table, "dict2");
     g_assert_nonnull (subtable);
-    g_assert (g_hash_table_size (subtable) == 3);
+    g_assert_cmpuint (g_hash_table_size (subtable), ==, 3);
 
     val = g_hash_table_lookup (subtable, "foo");
     g_assert_nonnull (val);
@@ -2102,7 +2102,7 @@ main (int argc, char **argv)
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty no-touching call", error);
     g_assert (G_VALUE_HOLDS (&value, G_TYPE_UINT));
-    g_assert (g_value_get_uint (&value) == 42);
+    g_assert_cmpuint (g_value_get_uint (&value), ==, 42);
     g_value_unset (&value);
   }
 
@@ -2130,7 +2130,7 @@ main (int argc, char **argv)
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
     g_assert (G_VALUE_HOLDS (&value, G_TYPE_UINT));
-    g_assert (g_value_get_uint (&value) == 42);
+    g_assert_cmpuint (g_value_get_uint (&value), ==, 42);
     g_value_unset (&value);
   }
 
