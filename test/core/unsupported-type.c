@@ -37,6 +37,7 @@
  */
 
 #include <config.h>
+#undef G_DISABLE_ASSERT
 
 #include <glib.h>
 #include <glib/gstdio.h>

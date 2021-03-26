@@ -1,6 +1,8 @@
 /* SPDX-License-Identifier: AFL-2.1 OR GPL-2.0-or-later */
 
 #include <config.h>
+#undef G_DISABLE_ASSERT
+
 #include <string.h>
 #include <glib/gi18n.h>
 #include <glib-object.h>

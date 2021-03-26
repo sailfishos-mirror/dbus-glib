@@ -26,6 +26,7 @@
  */
 
 #include <config.h>
+#undef G_DISABLE_ASSERT
 
 #include <glib.h>
 #include <gio/gio.h>

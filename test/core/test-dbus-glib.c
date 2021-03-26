@@ -27,6 +27,7 @@
  */
 
 #include <config.h>
+#undef G_DISABLE_ASSERT
 
 /* -*- mode: C; c-file-style: "gnu" -*- */
 #include <dbus/dbus-glib.h>

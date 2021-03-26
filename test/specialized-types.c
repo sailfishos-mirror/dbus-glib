@@ -24,6 +24,7 @@
  */
 
 #include <config.h>
+#undef G_DISABLE_ASSERT
 
 #include <string.h>
 
