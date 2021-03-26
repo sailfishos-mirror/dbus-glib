@@ -2212,7 +2212,7 @@ main (int argc, char **argv)
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed GetProperty call of \"should-be-hidden\" property", error);
     g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
-    g_assert (g_value_get_boolean (&value) == FALSE);
+    g_assert_false (g_value_get_boolean (&value));
     g_value_unset (&value);
   }
 
@@ -2254,7 +2254,7 @@ main (int argc, char **argv)
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed GetProperty call of \"should-be-hidden\" property", error);
     g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
-    g_assert (g_value_get_boolean (&value) == FALSE);
+    g_assert_false (g_value_get_boolean (&value));
     g_value_unset (&value);
   }
 

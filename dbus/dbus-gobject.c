@@ -3341,11 +3341,11 @@ _dbus_gobject_test (const char *test_data_dir)
   g_assert_cmpint (*arg, !=, '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
   g_assert_cmpstr (arg_name, ==, "x");
-  g_assert (arg_in == TRUE);
+  g_assert_true (arg_in);
   g_assert_cmpstr (arg_signature, ==, "u");
   g_assert_cmpint (*arg, !=, '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
-  g_assert (arg_in == FALSE);
+  g_assert_false (arg_in);
   g_assert_cmpint (retval, ==, RETVAL_NONE);
   g_assert_cmpstr (arg_signature, ==, "u");
   g_assert_cmpint (*arg, ==, '\0');
@@ -3356,12 +3356,12 @@ _dbus_gobject_test (const char *test_data_dir)
   g_assert_cmpint (*arg, !=, '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
   g_assert_cmpstr (arg_name, ==, "x");
-  g_assert (arg_in == TRUE);
+  g_assert_true (arg_in);
   g_assert_cmpstr (arg_signature, ==, "u");
   g_assert_cmpint (*arg, !=, '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
   g_assert_cmpint (retval, ==, RETVAL_NOERROR);
-  g_assert (arg_in == FALSE);
+  g_assert_false (arg_in);
   g_assert_cmpstr (arg_signature, ==, "u");
   g_assert_cmpint (*arg, ==, '\0');
 
@@ -3371,12 +3371,12 @@ _dbus_gobject_test (const char *test_data_dir)
   g_assert_cmpint (*arg, !=, '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
   g_assert_cmpstr (arg_name, ==, "x");
-  g_assert (arg_in == TRUE);
+  g_assert_true (arg_in);
   g_assert_cmpstr (arg_signature, ==, "u");
   g_assert_cmpint (*arg, !=, '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
   g_assert_cmpint (retval, ==, RETVAL_ERROR);
-  g_assert (arg_in == FALSE);
+  g_assert_false (arg_in);
   g_assert_cmpstr (arg_signature, ==, "u");
   g_assert_cmpint (*arg, ==, '\0');
   
@@ -3386,12 +3386,12 @@ _dbus_gobject_test (const char *test_data_dir)
   g_assert_cmpint (*arg, !=, '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
   g_assert_cmpstr (arg_name, ==, "val");
-  g_assert (arg_in == TRUE);
+  g_assert_true (arg_in);
   g_assert_cmpstr (arg_signature, ==, "v");
   g_assert_cmpint (*arg, !=, '\0');
   arg = arg_iterate (arg, &arg_name, &arg_in, &constval, &retval, &arg_signature);
   g_assert_cmpint (retval, ==, RETVAL_NONE);
-  g_assert (arg_in == FALSE);
+  g_assert_false (arg_in);
   g_assert_cmpstr (arg_signature, ==, "s");
   g_assert_cmpint (*arg, ==, '\0');
 
