@@ -192,7 +192,7 @@ test_disconnect (Fixture *f,
   ok = dbus_g_proxy_end_call (f->proxy, fail, &error,
       G_TYPE_INVALID);
   g_assert_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED);
-  g_assert (!ok);
+  g_assert_false (ok);
   g_clear_error (&error);
 
   while (!f->proxy_destroyed)

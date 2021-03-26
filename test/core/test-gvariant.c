@@ -184,7 +184,7 @@ test_simple_not_equiv (void)
   v1 = g_variant_new_int32 (1982);
   v2 = g_variant_new_int32 (1984);
 
-  g_assert (!test_g_variant_equivalent (v1, v2));
+  g_assert_false (test_g_variant_equivalent (v1, v2));
 
   g_variant_unref (v1);
   g_variant_unref (v2);
@@ -209,7 +209,7 @@ test_array_not_equiv (void)
   g_variant_builder_add (&b, "v", g_variant_new_object_path ("/cats/escher"));
   v2 = g_variant_builder_end (&b);
 
-  g_assert (!test_g_variant_equivalent (v1, v2));
+  g_assert_false (test_g_variant_equivalent (v1, v2));
 
   g_variant_unref (v1);
   g_variant_unref (v2);
@@ -259,7 +259,7 @@ test_map_not_equiv1 (void)
   g_variant_builder_add (&b, "{os}", "/cats/rory", "Rory Cat");
   v2 = g_variant_builder_end (&b);
 
-  g_assert (!test_g_variant_equivalent (v1, v2));
+  g_assert_false (test_g_variant_equivalent (v1, v2));
 
   g_variant_unref (v1);
   g_variant_unref (v2);
@@ -283,7 +283,7 @@ test_map_not_equiv2 (void)
   g_variant_builder_add (&b, "{os}", "/cats/josh", "Josh Cat");
   v2 = g_variant_builder_end (&b);
 
-  g_assert (!test_g_variant_equivalent (v1, v2));
+  g_assert_false (test_g_variant_equivalent (v1, v2));
 
   g_variant_unref (v1);
   g_variant_unref (v2);

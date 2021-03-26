@@ -239,7 +239,7 @@ test_timeout (Fixture *f,
             G_TYPE_INVALID);
 
       g_assert_error (error, DBUS_GERROR, DBUS_GERROR_NO_REPLY);
-      g_assert (!ok);
+      g_assert_false (ok);
       g_clear_error (&error);
     }
 
