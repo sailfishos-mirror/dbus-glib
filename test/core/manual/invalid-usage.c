@@ -75,7 +75,7 @@ setup (Fixture *f,
   g_assert_nonnull (f->proxy);
 
   f->object = g_object_new (MY_TYPE_OBJECT, NULL);
-  g_assert (MY_IS_OBJECT (f->object));
+  g_assert_true (MY_IS_OBJECT (f->object));
   dbus_g_connection_register_g_object (f->conn, "/com/example/Test/Object",
       f->object);
 

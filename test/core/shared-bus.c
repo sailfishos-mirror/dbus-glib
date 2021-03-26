@@ -110,14 +110,14 @@ test_shared_bus (Fixture *f,
   dbus_connection_set_exit_on_disconnect (dbus_g_connection_get_connection (f->bus),
                                           FALSE);
 
-  g_assert (f->bus == dbus_g_bus_get (DBUS_BUS_SESSION, NULL));
-  g_assert (f->bus == dbus_g_bus_get (DBUS_BUS_SESSION, NULL));
-  g_assert (f->bus == dbus_g_bus_get (DBUS_BUS_SESSION, NULL));
+  g_assert_true (f->bus == dbus_g_bus_get (DBUS_BUS_SESSION, NULL));
+  g_assert_true (f->bus == dbus_g_bus_get (DBUS_BUS_SESSION, NULL));
+  g_assert_true (f->bus == dbus_g_bus_get (DBUS_BUS_SESSION, NULL));
 
   f->priv = dbus_g_bus_get_private (DBUS_BUS_SESSION, NULL, &f->error);
   g_assert_no_error (f->error);
   g_assert_nonnull (f->priv);
-  g_assert (f->priv != f->bus);
+  g_assert_true (f->priv != f->bus);
   dbus_connection_set_exit_on_disconnect (dbus_g_connection_get_connection (f->priv),
                                           FALSE);
 }

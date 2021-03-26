@@ -84,7 +84,7 @@ auth_result_cb (DBusGProxy *proxy,
 {
   Fixture *f = user_data;
 
-  g_assert (proxy == f->proxy);
+  g_assert_true (proxy == f->proxy);
   g_ptr_array_add (f->auth_results, g_strdup (res));
 }
 
@@ -125,7 +125,7 @@ setup (Fixture *f,
 
   f->proxy = dbus_g_proxy_new_for_name (f->client_gconn, WELL_KNOWN_NAME,
       PATH, IFACE);
-  g_assert (DBUS_IS_G_PROXY (f->proxy));
+  g_assert_true (DBUS_IS_G_PROXY (f->proxy));
 
   /* The proxy is listening for the signal. */
   f->auth_results = g_ptr_array_new_with_free_func (g_free);

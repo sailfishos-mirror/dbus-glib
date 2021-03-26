@@ -232,7 +232,7 @@ sig1_signal_handler (DBusGProxy  *proxy,
 
   g_assert_cmpstr (str0, ==, "baz");
 
-  g_assert (G_VALUE_HOLDS_STRING (value));
+  g_assert_true (G_VALUE_HOLDS_STRING (value));
 
   g_assert_cmpstr (g_value_get_string (value), ==, "bar");
 
@@ -272,7 +272,7 @@ echo_received_cb (DBusGProxy *proxy,
   GError *error;
   char *echo_data;
 
-  g_assert (call == echo_call);
+  g_assert_true (call == echo_call);
   g_assert_null (data);
 
   error = NULL;
@@ -1202,10 +1202,10 @@ main (int argc, char **argv)
     g_assert_nonnull (vals_ret);
     g_assert_cmpuint (vals_ret->n_values, ==, 2);
 
-    g_assert (G_VALUE_HOLDS_UINT (g_value_array_get_nth (vals_ret, 0)));
+    g_assert_true (G_VALUE_HOLDS_UINT (g_value_array_get_nth (vals_ret, 0)));
     g_assert_cmpuint (g_value_get_uint (g_value_array_get_nth (vals_ret, 0)), ==, 43);
     
-    g_assert (G_VALUE_TYPE (g_value_array_get_nth (vals_ret, 1)) == DBUS_TYPE_G_OBJECT_PATH);
+    g_assert_true (G_VALUE_TYPE (g_value_array_get_nth (vals_ret, 1)) == DBUS_TYPE_G_OBJECT_PATH);
     g_assert_cmpstr ("/org/freedesktop/DBus/GLib/Tests/MyTestObject2", ==,
                      g_value_get_boxed (g_value_array_get_nth (vals_ret, 1)));
 
@@ -1265,12 +1265,12 @@ main (int argc, char **argv)
 
     val = g_hash_table_lookup (ret_table, "foo");
     g_assert_nonnull (val);
-    g_assert (G_VALUE_HOLDS_STRING (val));
+    g_assert_true (G_VALUE_HOLDS_STRING (val));
     g_assert_cmpstr ("42", ==, g_value_get_string (val));
 
     val = g_hash_table_lookup (ret_table, "bar");
     g_assert_nonnull (val);
-    g_assert (G_VALUE_HOLDS_STRING (val));
+    g_assert_true (G_VALUE_HOLDS_STRING (val));
     g_assert_cmpstr ("hello", ==, g_value_get_string (val));
 
     g_hash_table_destroy (table);
@@ -2074,7 +2074,7 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_STRING));
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_STRING));
     g_assert_cmpstr (g_value_get_string (&value), ==, "");
     g_value_unset (&value);
   }
@@ -2101,7 +2101,7 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty no-touching call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_UINT));
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_UINT));
     g_assert_cmpuint (g_value_get_uint (&value), ==, 42);
     g_value_unset (&value);
   }
@@ -2129,7 +2129,7 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_UINT));
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_UINT));
     g_assert_cmpuint (g_value_get_uint (&value), ==, 42);
     g_value_unset (&value);
   }
@@ -2143,7 +2143,7 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_STRING));
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_STRING));
     g_assert_cmpstr (g_value_get_string (&value), ==, "testing value");
     g_value_unset (&value);
   }
@@ -2157,7 +2157,7 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE));
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE));
     g_value_unset (&value);
   }
 
@@ -2170,7 +2170,7 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE));
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE));
     g_value_unset (&value);
   }
 
@@ -2183,7 +2183,7 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE));
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE));
     g_value_unset (&value);
   }
 
@@ -2211,7 +2211,7 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed GetProperty call of \"should-be-hidden\" property", error);
-    g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
+    g_assert_true (G_VALUE_HOLDS_BOOLEAN (&value));
     g_assert_false (g_value_get_boolean (&value));
     g_value_unset (&value);
   }
@@ -2253,7 +2253,7 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed GetProperty call of \"should-be-hidden\" property", error);
-    g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
+    g_assert_true (G_VALUE_HOLDS_BOOLEAN (&value));
     g_assert_false (g_value_get_boolean (&value));
     g_value_unset (&value);
   }
@@ -2386,7 +2386,7 @@ main (int argc, char **argv)
     
     if (privconn == NULL)
       lose_gerror ("Failed to open private connection to bus", error);
-    g_assert (privconn != connection);
+    g_assert_true (privconn != connection);
     
     proxy = dbus_g_proxy_new_for_name (privconn,
                                        "org.freedesktop.DBus.GLib.TestService",

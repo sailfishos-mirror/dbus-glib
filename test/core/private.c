@@ -62,8 +62,8 @@ call_cb (DBusGProxy *proxy,
 {
   Fixture *f = user_data;
 
-  g_assert (proxy == f->proxy);
-  g_assert (call == f->call);
+  g_assert_true (proxy == f->proxy);
+  g_assert_true (call == f->call);
 
   f->in_flight--;
 }
@@ -75,7 +75,7 @@ frobnicate_cb (DBusGProxy *proxy,
 {
   Fixture *f = user_data;
 
-  g_assert (proxy == f->proxy);
+  g_assert_true (proxy == f->proxy);
 
   f->in_flight--;
 
@@ -94,7 +94,7 @@ setup (Fixture *f,
   g_assert_nonnull (f->bus);
 
   f->object = g_object_new (MY_TYPE_OBJECT, NULL);
-  g_assert (MY_IS_OBJECT (f->object));
+  g_assert_true (MY_IS_OBJECT (f->object));
   dbus_g_connection_register_g_object (f->bus, "/object",
       (GObject *) f->object);
 
@@ -169,7 +169,7 @@ test_call (Fixture *f,
             G_TYPE_INVALID);
 
       g_assert_no_error (error);
-      g_assert (ok);
+      g_assert_true (ok);
       g_assert_cmpuint (result, ==, 667);
     }
 

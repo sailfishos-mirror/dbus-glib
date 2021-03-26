@@ -82,7 +82,7 @@ setup (Fixture *f,
   g_assert_nonnull (f->bus2);
 
   f->object = g_object_new (MY_TYPE_OBJECT, NULL);
-  g_assert (MY_IS_OBJECT (f->object));
+  g_assert_true (MY_IS_OBJECT (f->object));
 }
 
 static void
@@ -124,7 +124,7 @@ test_lookup (Fixture *f,
   g_test_bug ("5688");
 
   dbus_g_connection_register_g_object (f->bus, "/foo", f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
+  g_assert_true (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
       f->object);
   /* this was briefly broken while fixing fd.o#5688 */
   g_assert_null (dbus_g_connection_lookup_g_object (f->bus, "/bar"));
@@ -138,7 +138,7 @@ test_unregister (Fixture *f,
   g_test_bug ("21219");
 
   dbus_g_connection_register_g_object (f->bus, "/foo", f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
+  g_assert_true (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
       f->object);
   dbus_g_connection_unregister_g_object (f->bus, f->object);
   g_assert_null (dbus_g_connection_lookup_g_object (f->bus, "/foo"));
@@ -154,7 +154,7 @@ test_unregister_on_last_unref (Fixture *f,
   g_object_add_weak_pointer (weak_pointer, &weak_pointer);
 
   dbus_g_connection_register_g_object (f->bus, "/foo", f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
+  g_assert_true (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
       f->object);
   /* implicit unregistration by the last-unref of the object */
   g_object_unref (f->object);
@@ -170,7 +170,7 @@ test_unregister_on_forced_dispose (Fixture *f,
     gconstpointer test_data G_GNUC_UNUSED)
 {
   dbus_g_connection_register_g_object (f->bus, "/foo", f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
+  g_assert_true (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
       f->object);
   /* implicit unregistration by dispose() of the object (don't try
    * this at home) */
@@ -184,7 +184,7 @@ test_reregister (Fixture *f,
     gconstpointer test_data G_GNUC_UNUSED)
 {
   dbus_g_connection_register_g_object (f->bus, "/foo", f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
+  g_assert_true (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
       f->object);
 
   /* Before 0.82, re-registering the same object path was leaky but successful.
@@ -193,7 +193,7 @@ test_reregister (Fixture *f,
    * record of the registrations (while leaving the object registered with
    * libdbus). */
   dbus_g_connection_register_g_object (f->bus, "/foo", f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
+  g_assert_true (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
       f->object);
 
   /* This would critical in 0.84. */
@@ -251,9 +251,9 @@ test_twice (Fixture *f,
 
   dbus_g_connection_register_g_object (f->bus2, "/bar", f->object);
 
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
+  g_assert_true (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
       f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus2, "/bar") ==
+  g_assert_true (dbus_g_connection_lookup_g_object (f->bus2, "/bar") ==
       f->object);
 
   dbus_bus_add_match (dbus_g_connection_get_connection (f->bus),
@@ -261,7 +261,7 @@ test_twice (Fixture *f,
   assert_no_error (&f->dbus_error);
   mem = dbus_connection_add_filter (dbus_g_connection_get_connection (f->bus),
       frobnicate_cb, f, NULL);
-  g_assert (mem);
+  g_assert_true (mem);
 
   my_object_emit_frobnicate ((MyObject *) f->object, NULL);
 
@@ -299,10 +299,10 @@ test_clean_slate (Fixture *f,
   assert_no_error (&f->dbus_error);
   mem = dbus_connection_add_filter (dbus_g_connection_get_connection (f->bus),
       frobnicate_cb, f, NULL);
-  g_assert (mem);
+  g_assert_true (mem);
 
   dbus_g_connection_register_g_object (f->bus, "/foo", f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
+  g_assert_true (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
       f->object);
 
   my_object_emit_frobnicate ((MyObject *) f->object, NULL);
@@ -317,7 +317,7 @@ test_clean_slate (Fixture *f,
    * in the same location */
   dbus_g_connection_unregister_g_object (f->bus, f->object);
   dbus_g_connection_register_g_object (f->bus, "/foo", f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
+  g_assert_true (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
       f->object);
 
   /* bug: in 0.92, this would be emitted twice because the hook was added
@@ -334,7 +334,7 @@ test_clean_slate (Fixture *f,
    * at a different location */
   dbus_g_connection_unregister_g_object (f->bus, f->object);
   dbus_g_connection_register_g_object (f->bus2, "/bar", f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus2, "/bar") ==
+  g_assert_true (dbus_g_connection_lookup_g_object (f->bus2, "/bar") ==
       f->object);
 
   my_object_emit_frobnicate ((MyObject *) f->object, NULL);
@@ -383,7 +383,7 @@ objectified_cb (DBusConnection *conn,
       if (dbus_error_is_set (&e))
         g_error ("%s: %s", e.name, e.message);
 
-      g_assert (ok);
+      g_assert_true (ok);
       g_assert_cmpstr (path, ==, "/foo");
 
       f->received_objectified = TRUE;
@@ -401,7 +401,7 @@ test_marshal_object (Fixture *f,
   g_test_bug ("37852");
 
   dbus_g_connection_register_g_object (f->bus, "/foo", f->object);
-  g_assert (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
+  g_assert_true (dbus_g_connection_lookup_g_object (f->bus, "/foo") ==
       f->object);
 
   dbus_bus_add_match (dbus_g_connection_get_connection (f->bus),
@@ -409,7 +409,7 @@ test_marshal_object (Fixture *f,
   assert_no_error (&f->dbus_error);
   mem = dbus_connection_add_filter (dbus_g_connection_get_connection (f->bus),
       objectified_cb, f, NULL);
-  g_assert (mem);
+  g_assert_true (mem);
 
   my_object_emit_objectified ((MyObject *) f->object, f->object);
 

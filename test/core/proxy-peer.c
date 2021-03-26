@@ -81,7 +81,7 @@ destroy_cb (DBusGProxy *proxy,
 {
   Fixture *f = user_data;
 
-  g_assert (proxy == f->proxy);
+  g_assert_true (proxy == f->proxy);
 
   f->proxy_destroyed = TRUE;
 }
@@ -124,7 +124,7 @@ setup (Fixture *f,
       "/org/freedesktop/DBus/GLib/Tests/MyTestObject",
       "org.freedesktop.DBus.GLib.Tests.MyObject");
   g_assert_nonnull (f->proxy);
-  g_assert (DBUS_IS_G_PROXY (f->proxy));
+  g_assert_true (DBUS_IS_G_PROXY (f->proxy));
 
   g_signal_connect (f->proxy, "destroy", G_CALLBACK (destroy_cb), f);
 
@@ -141,7 +141,7 @@ call_cb (DBusGProxy *proxy,
   gboolean found;
 
   found = g_hash_table_remove (f->in_flight, call);
-  g_assert (found);
+  g_assert_true (found);
   g_hash_table_insert (f->completed, call, call);
 }
 
@@ -165,11 +165,11 @@ test_method (Fixture *f,
     }
 
   ok = g_hash_table_remove (f->completed, call);
-  g_assert (ok);
+  g_assert_true (ok);
   ok = dbus_g_proxy_end_call (f->proxy, call, &error,
       G_TYPE_INVALID);
   g_assert_no_error (error);
-  g_assert (ok);
+  g_assert_true (ok);
 }
 
 static void
