@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: AFL-2.1 OR GPL-2.0-or-later */
 
 #include <config.h>
+#undef G_DISABLE_ASSERT
 
 /* -*- mode: C; c-file-style: "gnu" -*- */
 #include <stdio.h>

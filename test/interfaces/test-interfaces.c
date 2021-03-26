@@ -2,6 +2,7 @@
 
 #ifdef HAVE_CONFIG_H
 #	include <config.h>
+#	undef G_DISABLE_ASSERT
 #endif
 #include "test-interfaces.h"
 
