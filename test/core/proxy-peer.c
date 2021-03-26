@@ -94,7 +94,7 @@ setup (Fixture *f,
 
   f->server = dbus_server_listen (addr, &f->e);
   assert_no_error (&f->e);
-  g_assert (f->server != NULL);
+  g_assert_nonnull (f->server);
 
   dbus_server_set_new_connection_function (f->server,
       new_conn_cb, f, NULL);
@@ -105,7 +105,7 @@ setup (Fixture *f,
   f->client_conn = dbus_connection_open_private (
       dbus_server_get_address (f->server), &f->e);
   assert_no_error (&f->e);
-  g_assert (f->client_conn != NULL);
+  g_assert_nonnull (f->client_conn);
   dbus_connection_setup_with_g_main (f->client_conn, NULL);
   f->client_gconn = dbus_connection_get_g_connection (f->client_conn);
 
@@ -123,7 +123,7 @@ setup (Fixture *f,
   f->proxy = dbus_g_proxy_new_for_peer (f->client_gconn,
       "/org/freedesktop/DBus/GLib/Tests/MyTestObject",
       "org.freedesktop.DBus.GLib.Tests.MyObject");
-  g_assert (f->proxy != NULL);
+  g_assert_nonnull (f->proxy);
   g_assert (DBUS_IS_G_PROXY (f->proxy));
 
   g_signal_connect (f->proxy, "destroy", G_CALLBACK (destroy_cb), f);
@@ -155,7 +155,7 @@ test_method (Fixture *f,
 
   call = dbus_g_proxy_begin_call (f->proxy, "DoNothing", call_cb, f, NULL,
       G_TYPE_INVALID);
-  g_assert (call != NULL);
+  g_assert_nonnull (call);
   g_hash_table_insert (f->in_flight, call, call);
 
   while (g_hash_table_size (f->in_flight) > 0)

@@ -91,7 +91,7 @@ setup (Fixture *f,
   f->in_flight = 0;
 
   f->bus = dbus_g_bus_get_private (DBUS_BUS_SESSION, f->context, NULL);
-  g_assert (f->bus != NULL);
+  g_assert_nonnull (f->bus);
 
   f->object = g_object_new (MY_TYPE_OBJECT, NULL);
   g_assert (MY_IS_OBJECT (f->object));

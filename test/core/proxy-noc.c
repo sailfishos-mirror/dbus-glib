@@ -101,14 +101,14 @@ setup (Fixture *f,
   f->service_gconn = dbus_g_bus_get_private (DBUS_BUS_SESSION, NULL,
       &f->error);
   g_assert_no_error (f->error);
-  g_assert (f->service_gconn != NULL);
+  g_assert_nonnull (f->service_gconn);
   f->service_conn = dbus_g_connection_get_connection (f->service_gconn);
 
   /* An attacker that intends to pretend to be that service. */
   f->attacker_gconn = dbus_g_bus_get_private (DBUS_BUS_SESSION, NULL,
       &f->error);
   g_assert_no_error (f->error);
-  g_assert (f->attacker_gconn != NULL);
+  g_assert_nonnull (f->attacker_gconn);
   f->attacker_conn = dbus_g_connection_get_connection (f->attacker_gconn);
 
   /* The service owns a well-known name. */
@@ -120,7 +120,7 @@ setup (Fixture *f,
   /* The victim of the attack. */
   f->client_gconn = dbus_g_bus_get_private (DBUS_BUS_SESSION, NULL, &f->error);
   g_assert_no_error (f->error);
-  g_assert (f->client_gconn != NULL);
+  g_assert_nonnull (f->client_gconn);
   f->client_conn = dbus_g_connection_get_connection (f->client_gconn);
 
   f->proxy = dbus_g_proxy_new_for_name (f->client_gconn, WELL_KNOWN_NAME,

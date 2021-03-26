@@ -2028,7 +2028,7 @@ assert_type_maps_to (GType gtype, const char *expected_sig)
 {
   char *sig;
   sig = _dbus_gtype_to_signature (gtype);
-  g_assert (sig != NULL);
+  g_assert_nonnull (sig);
   g_assert (!strcmp (expected_sig, sig));
   g_free (sig);
 }

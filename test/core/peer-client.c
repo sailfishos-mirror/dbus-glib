@@ -95,7 +95,7 @@ main (int argc, char **argv)
     g_error ("Cannot open connection: %s", error->message);
   
   proxy = dbus_g_proxy_new_for_peer (conn, "/", "org.freedesktop.DBus.GLib.Tests.MyObject");
-  g_assert (proxy);
+  g_assert_nonnull (proxy);
 
   
   if (!dbus_g_proxy_call (proxy, "DoNothing", &error, G_TYPE_INVALID, G_TYPE_INVALID))

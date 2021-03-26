@@ -246,7 +246,7 @@ test_ao_slist (Fixture *f G_GNUC_UNUSED,
         GValue eltval = { 0, };
         GObject *obj = g_object_new (G_TYPE_OBJECT, NULL);
 
-        g_assert (obj != NULL);
+        g_assert_nonnull (obj);
         objects[i] = obj;
         g_object_add_weak_pointer (obj, (gpointer) (objects + i));
 

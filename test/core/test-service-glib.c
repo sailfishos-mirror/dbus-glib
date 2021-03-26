@@ -90,7 +90,7 @@ main (int argc, char **argv)
 					  TEST_SERVICE_NAME,
 					  0, &request_name_ret, &error))
     {
-      g_assert (error != NULL);
+      g_assert_nonnull (error);
       g_printerr ("Failed to get name: %s\n",
 		  error->message);
       g_clear_error (&error);

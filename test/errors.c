@@ -53,7 +53,7 @@ test_errors (Fixture *f G_GNUC_UNUSED,
   dbus_set_error_const (&err, DBUS_ERROR_NO_MEMORY, "Out of memory!");
 
   dbus_set_g_error (&gerror, &err);
-  g_assert (gerror != NULL);
+  g_assert_nonnull (gerror);
   g_assert_error (gerror, DBUS_GERROR, DBUS_GERROR_NO_MEMORY);
   g_assert_cmpstr (gerror->message, ==, "Out of memory!");
 

@@ -251,9 +251,9 @@ sig2_signal_handler (DBusGProxy  *proxy,
 
   g_assert (g_hash_table_size (table) == 2);
 
-  g_assert (g_hash_table_lookup (table, "baz") != NULL);
+  g_assert_nonnull (g_hash_table_lookup (table, "baz"));
   g_assert (!strcmp (g_hash_table_lookup (table, "baz"), "cow"));
-  g_assert (g_hash_table_lookup (table, "bar") != NULL);
+  g_assert_nonnull (g_hash_table_lookup (table, "bar"));
   g_assert (!strcmp (g_hash_table_lookup (table, "bar"), "foo"));
 
   g_print ("Got Sig2 signal\n");
@@ -284,7 +284,7 @@ echo_received_cb (DBusGProxy *proxy,
 			      &echo_data,
 			      G_TYPE_INVALID))
     lose_gerror ("Failed to complete async Echo", error);
-  g_assert (echo_data != NULL);
+  g_assert_nonnull (echo_data);
   g_print ("Async echo gave \"%s\"\n", echo_data); 
   g_free (echo_data);
   g_main_loop_quit (loop);
@@ -343,8 +343,8 @@ test_base_class_get_all (DBusGConnection *connection,
 
   /* g_test_bug (19145); */
 
-  g_assert (expected_string_value != NULL);
-  g_assert (object_path != NULL);
+  g_assert_nonnull (expected_string_value);
+  g_assert_nonnull (object_path);
 
   /* Test GetAll with interfaces on the base class */
 
@@ -352,7 +352,7 @@ test_base_class_get_all (DBusGConnection *connection,
 				     "org.freedesktop.DBus.GLib.TestService",
 				     object_path,
 				     DBUS_INTERFACE_PROPERTIES);
-  g_assert (proxy != NULL);
+  g_assert_nonnull (proxy);
 
   g_print ("%s: Calling GetAll for unknown interface\n", object_path);
   {
@@ -434,7 +434,7 @@ test_subclass_get_all (DBusGConnection *connection,
 
   /* g_test_bug (19145); */
 
-  g_assert (object_path != NULL);
+  g_assert_nonnull (object_path);
 
   /* Test GetAll with interfaces on the subclass */
 
@@ -442,7 +442,7 @@ test_subclass_get_all (DBusGConnection *connection,
 				     "org.freedesktop.DBus.GLib.TestService",
 				     object_path,
 				     DBUS_INTERFACE_PROPERTIES);
-  g_assert (proxy != NULL);
+  g_assert_nonnull (proxy);
 
   g_print ("%s: Calling GetAll for subclass interface\n", object_path);
   {
@@ -600,7 +600,7 @@ main (int argc, char **argv)
   name_list_len = g_strv_length (name_list);
   while (i < name_list_len)
     {
-      g_assert (name_list[i] != NULL);
+      g_assert_nonnull (name_list[i]);
       g_print ("  %s\n", name_list[i]);
       ++i;
     }
@@ -1112,7 +1112,7 @@ main (int argc, char **argv)
     g_print ("Calling (wrapped) many_uppercase\n");
     if (!org_freedesktop_DBus_GLib_Tests_MyObject_many_uppercase (proxy, strs, &strs_ret, &error)) 
       lose_gerror ("Failed to complete (wrapped) ManyUppercase call", error);
-    g_assert (strs_ret != NULL);
+    g_assert_nonnull (strs_ret);
     if (strcmp ("HELLO", strs_ret[0]) != 0)
       lose ("(wrapped) ManyUppercase call returned unexpected string %s", strs_ret[0]);
     if (strcmp ("HELLO", strs_ret[1]) != 0)
@@ -1199,7 +1199,7 @@ main (int argc, char **argv)
 			    G_TYPE_INVALID))
       lose_gerror ("Failed to complete SendCar call", error);
 
-    g_assert (vals_ret != NULL);
+    g_assert_nonnull (vals_ret);
     g_assert (vals_ret->n_values == 2);
 
     g_assert (G_VALUE_HOLDS_UINT (g_value_array_get_nth (vals_ret, 0)));
@@ -1260,16 +1260,16 @@ main (int argc, char **argv)
 			    G_TYPE_INVALID))
       lose_gerror ("Failed to complete ManyStringify call", error);
 
-    g_assert (ret_table != NULL);
+    g_assert_nonnull (ret_table);
     g_assert (g_hash_table_size (ret_table) == 2);
 
     val = g_hash_table_lookup (ret_table, "foo");
-    g_assert (val != NULL);
+    g_assert_nonnull (val);
     g_assert (G_VALUE_HOLDS_STRING (val));
     g_assert (!strcmp ("42", g_value_get_string (val)));
 
     val = g_hash_table_lookup (ret_table, "bar");
-    g_assert (val != NULL);
+    g_assert_nonnull (val);
     g_assert (G_VALUE_HOLDS_STRING (val));
     g_assert (!strcmp ("hello", g_value_get_string (val)));
 
@@ -1312,17 +1312,17 @@ main (int argc, char **argv)
     g_free (g_ptr_array_index (in_array, 1));
     g_ptr_array_free (in_array, TRUE);
 
-    g_assert (out_array);
+    g_assert_nonnull (out_array);
     g_assert (out_array->len == 2);
     uints = g_ptr_array_index (out_array, 0);
-    g_assert (uints);
+    g_assert_nonnull (uints);
     g_assert (uints->len == 3);
     g_assert (g_array_index (uints, guint, 0) == 10);
     g_assert (g_array_index (uints, guint, 1) == 42);
     g_assert (g_array_index (uints, guint, 2) == 27);
     g_array_free (uints, TRUE);
     uints = g_ptr_array_index (out_array, 1);
-    g_assert (uints);
+    g_assert_nonnull (uints);
     g_assert (uints->len == 1);
     g_assert (g_array_index (uints, guint, 0) == 30);
     g_array_free (uints, TRUE);
@@ -1520,39 +1520,39 @@ main (int argc, char **argv)
 			    G_TYPE_INVALID))
       lose_gerror ("Failed to complete DictOfDicts call", error);
 
-    g_assert (ret_table != NULL);
+    g_assert_nonnull (ret_table);
     g_assert (g_hash_table_size (ret_table) == 2);
 
     subtable = g_hash_table_lookup (ret_table, "dict1");
-    g_assert(subtable);
+    g_assert_nonnull (subtable);
     g_assert (g_hash_table_size (subtable) == 3);
 
     val = g_hash_table_lookup (subtable, "foo");
-    g_assert (val != NULL);
+    g_assert_nonnull (val);
     g_assert (!strcmp ("dict1 1", val));
 
     val = g_hash_table_lookup (subtable, "bar");
-    g_assert (val != NULL);
+    g_assert_nonnull (val);
     g_assert (!strcmp ("dict1 2", val));
 
     val = g_hash_table_lookup (subtable, "baz");
-    g_assert (val != NULL);
+    g_assert_nonnull (val);
     g_assert (!strcmp ("dict1 3", val));
 
     subtable = g_hash_table_lookup (ret_table, "dict2");
-    g_assert(subtable);
+    g_assert_nonnull (subtable);
     g_assert (g_hash_table_size (subtable) == 3);
 
     val = g_hash_table_lookup (subtable, "foo");
-    g_assert (val != NULL);
+    g_assert_nonnull (val);
     g_assert (!strcmp ("dict2 4", val));
 
     val = g_hash_table_lookup (subtable, "bar");
-    g_assert (val != NULL);
+    g_assert_nonnull (val);
     g_assert (!strcmp ("dict2 5", val));
 
     val = g_hash_table_lookup (subtable, "baz");
-    g_assert (val != NULL);
+    g_assert_nonnull (val);
     g_assert (!strcmp ("dict2 6", val));
 
     g_hash_table_destroy (table);
@@ -1809,7 +1809,7 @@ main (int argc, char **argv)
 				     "org.freedesktop.DBus.GLib.TestService",
 				     "/org/freedesktop/DBus/GLib/Tests/MyTestObject",
 				     "org.freedesktop.DBus.GLib.Tests.MyObject");
-  g_assert (proxy != NULL);
+  g_assert_nonnull (proxy);
 
   proxy_destroyed = FALSE;
   proxy_destroy_and_nameowner = FALSE;
@@ -1912,7 +1912,7 @@ main (int argc, char **argv)
 				     "org.freedesktop.DBus.GLib.TestService",
 				     "/org/freedesktop/DBus/GLib/Tests/MyTestObject",
 				     "org.freedesktop.DBus.GLib.Tests.MyObject");
-  g_assert (proxy2 != NULL);
+  g_assert_nonnull (proxy2);
 
   dbus_g_proxy_add_signal (proxy2, "Frobnicate", G_TYPE_INT, G_TYPE_INVALID);
   

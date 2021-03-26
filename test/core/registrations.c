@@ -76,10 +76,10 @@ setup (Fixture *f,
   dbus_error_init (&f->dbus_error);
 
   f->bus = dbus_g_bus_get_private (DBUS_BUS_SESSION, NULL, NULL);
-  g_assert (f->bus != NULL);
+  g_assert_nonnull (f->bus);
 
   f->bus2 = dbus_g_bus_get_private (DBUS_BUS_SESSION, NULL, NULL);
-  g_assert (f->bus2 != NULL);
+  g_assert_nonnull (f->bus2);
 
   f->object = g_object_new (MY_TYPE_OBJECT, NULL);
   g_assert (MY_IS_OBJECT (f->object));
@@ -214,8 +214,8 @@ frobnicate_cb (DBusConnection *conn,
       const char *sender = dbus_message_get_sender (message);
       const char *path = dbus_message_get_path (message);
 
-      g_assert (sender != NULL);
-      g_assert (path != NULL);
+      g_assert_nonnull (sender);
+      g_assert_nonnull (path);
 
       if (g_strcmp0 (path, "/foo") == 0)
         {
@@ -368,8 +368,8 @@ objectified_cb (DBusConnection *conn,
 
       dbus_error_init (&e);
 
-      g_assert (sender != NULL);
-      g_assert (path != NULL);
+      g_assert_nonnull (sender);
+      g_assert_nonnull (path);
 
       g_assert_cmpstr (path, ==, "/foo");
       g_assert_cmpstr (sender, ==, dbus_bus_get_unique_name (
