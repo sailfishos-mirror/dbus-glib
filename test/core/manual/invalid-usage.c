@@ -68,21 +68,21 @@ setup (Fixture *f,
 
   f->conn = dbus_g_bus_get_private (DBUS_BUS_SESSION, NULL, &f->error);
   g_assert_no_error (f->error);
-  g_assert (f->conn != NULL);
+  g_assert_nonnull (f->conn);
 
   f->proxy = dbus_g_proxy_new_for_name (f->conn, "com.example.Test",
       "/com/example/Test/Object", "com.example.Test.Fallible");
-  g_assert (f->proxy != NULL);
+  g_assert_nonnull (f->proxy);
 
   f->object = g_object_new (MY_TYPE_OBJECT, NULL);
-  g_assert (MY_IS_OBJECT (f->object));
+  g_assert_true (MY_IS_OBJECT (f->object));
   dbus_g_connection_register_g_object (f->conn, "/com/example/Test/Object",
       f->object);
 
   f->proxy_for_self = dbus_g_proxy_new_for_name (f->conn,
       dbus_bus_get_unique_name (dbus_g_connection_get_connection (f->conn)),
       "/com/example/Test/Object", "org.freedesktop.DBus.GLib.Tests.MyObject");
-  g_assert (f->proxy_for_self != NULL);
+  g_assert_nonnull (f->proxy_for_self);
 }
 
 static void
@@ -194,7 +194,7 @@ throw_error_cb (DBusGProxy *proxy,
 {
   GError **error_out = user_data;
 
-  g_assert (error != NULL);
+  g_assert_nonnull (error);
   *error_out = g_error_copy (error);
 }
 

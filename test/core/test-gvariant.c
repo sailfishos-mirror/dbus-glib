@@ -170,7 +170,7 @@ test_simple_equiv (void)
   v1 = g_variant_new_int32 (1984);
   v2 = g_variant_new_int32 (1984);
 
-  g_assert (test_g_variant_equivalent (v1, v2));
+  g_assert_true (test_g_variant_equivalent (v1, v2));
 
   g_variant_unref (v1);
   g_variant_unref (v2);
@@ -184,7 +184,7 @@ test_simple_not_equiv (void)
   v1 = g_variant_new_int32 (1982);
   v2 = g_variant_new_int32 (1984);
 
-  g_assert (!test_g_variant_equivalent (v1, v2));
+  g_assert_false (test_g_variant_equivalent (v1, v2));
 
   g_variant_unref (v1);
   g_variant_unref (v2);
@@ -209,7 +209,7 @@ test_array_not_equiv (void)
   g_variant_builder_add (&b, "v", g_variant_new_object_path ("/cats/escher"));
   v2 = g_variant_builder_end (&b);
 
-  g_assert (!test_g_variant_equivalent (v1, v2));
+  g_assert_false (test_g_variant_equivalent (v1, v2));
 
   g_variant_unref (v1);
   g_variant_unref (v2);
@@ -234,7 +234,7 @@ test_map_equiv (void)
   g_variant_builder_add (&b, "{os}", "/cats/josh", "Josh Smith");
   v2 = g_variant_builder_end (&b);
 
-  g_assert (test_g_variant_equivalent (v1, v2));
+  g_assert_true (test_g_variant_equivalent (v1, v2));
 
   g_variant_unref (v1);
   g_variant_unref (v2);
@@ -259,7 +259,7 @@ test_map_not_equiv1 (void)
   g_variant_builder_add (&b, "{os}", "/cats/rory", "Rory Cat");
   v2 = g_variant_builder_end (&b);
 
-  g_assert (!test_g_variant_equivalent (v1, v2));
+  g_assert_false (test_g_variant_equivalent (v1, v2));
 
   g_variant_unref (v1);
   g_variant_unref (v2);
@@ -283,7 +283,7 @@ test_map_not_equiv2 (void)
   g_variant_builder_add (&b, "{os}", "/cats/josh", "Josh Cat");
   v2 = g_variant_builder_end (&b);
 
-  g_assert (!test_g_variant_equivalent (v1, v2));
+  g_assert_false (test_g_variant_equivalent (v1, v2));
 
   g_variant_unref (v1);
   g_variant_unref (v2);
@@ -304,7 +304,7 @@ test_i (void)
 
   varc = g_variant_new_int32 (1984);
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);
@@ -324,7 +324,7 @@ test_s (void)
 
   varc = g_variant_new_string ("Orwell");
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);
@@ -344,7 +344,7 @@ test_o (void)
 
   varc = g_variant_new_object_path ("/cats/escher");
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);
@@ -372,7 +372,7 @@ test_us (void)
 
   varc = g_variant_new ("(us)", 1984, "Orwell");
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);
@@ -409,7 +409,7 @@ test_a_os (void)
   g_variant_builder_add (&b, "{os}", "/cats/josh", "Josh Smith");
   varc = g_variant_builder_end (&b);
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);
@@ -453,7 +453,7 @@ test_av (void)
   g_variant_builder_add (&b, "v", g_variant_new_object_path ("/cats/escher"));
   varc = g_variant_builder_end (&b);
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);
@@ -486,7 +486,7 @@ test_ab (void)
   g_variant_builder_add (&b, "b", FALSE);
   varc = g_variant_builder_end (&b);
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);
@@ -519,7 +519,7 @@ test_ai (void)
   g_variant_builder_add (&b, "i", 1066);
   varc = g_variant_builder_end (&b);
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);
@@ -552,7 +552,7 @@ test_au (void)
   g_variant_builder_add (&b, "u", 1066);
   varc = g_variant_builder_end (&b);
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);
@@ -592,7 +592,7 @@ test_ax (void)
   g_variant_builder_add (&b, "x", G_GINT64_CONSTANT (1066));
   varc = g_variant_builder_end (&b);
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);
@@ -631,7 +631,7 @@ test_at (void)
   g_variant_builder_add (&b, "t", G_GUINT64_CONSTANT (1066));
   varc = g_variant_builder_end (&b);
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);
@@ -664,7 +664,7 @@ test_ay (void)
   g_variant_builder_add (&b, "y", 42);
   varc = g_variant_builder_end (&b);
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);
@@ -684,7 +684,7 @@ test_g (void)
 
   varc = g_variant_new_signature ("a{u(ua{sa{sv}})}");
 
-  g_assert (test_g_variant_equivalent (var, varc));
+  g_assert_true (test_g_variant_equivalent (var, varc));
 
   g_variant_unref (var);
   g_variant_unref (varc);

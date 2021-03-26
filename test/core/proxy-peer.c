@@ -69,7 +69,7 @@ new_conn_cb (DBusServer *server,
 {
   Fixture *f = data;
 
-  g_assert (f->server_conn == NULL);
+  g_assert_null (f->server_conn);
   f->server_conn = dbus_connection_ref (server_conn);
   dbus_connection_setup_with_g_main (server_conn, NULL);
   f->server_gconn = dbus_connection_get_g_connection (server_conn);
@@ -81,7 +81,7 @@ destroy_cb (DBusGProxy *proxy,
 {
   Fixture *f = user_data;
 
-  g_assert (proxy == f->proxy);
+  g_assert_true (proxy == f->proxy);
 
   f->proxy_destroyed = TRUE;
 }
@@ -94,18 +94,18 @@ setup (Fixture *f,
 
   f->server = dbus_server_listen (addr, &f->e);
   assert_no_error (&f->e);
-  g_assert (f->server != NULL);
+  g_assert_nonnull (f->server);
 
   dbus_server_set_new_connection_function (f->server,
       new_conn_cb, f, NULL);
   dbus_server_setup_with_g_main (f->server, NULL);
 
-  g_assert (f->server_conn == NULL);
+  g_assert_null (f->server_conn);
 
   f->client_conn = dbus_connection_open_private (
       dbus_server_get_address (f->server), &f->e);
   assert_no_error (&f->e);
-  g_assert (f->client_conn != NULL);
+  g_assert_nonnull (f->client_conn);
   dbus_connection_setup_with_g_main (f->client_conn, NULL);
   f->client_gconn = dbus_connection_get_g_connection (f->client_conn);
 
@@ -123,8 +123,8 @@ setup (Fixture *f,
   f->proxy = dbus_g_proxy_new_for_peer (f->client_gconn,
       "/org/freedesktop/DBus/GLib/Tests/MyTestObject",
       "org.freedesktop.DBus.GLib.Tests.MyObject");
-  g_assert (f->proxy != NULL);
-  g_assert (DBUS_IS_G_PROXY (f->proxy));
+  g_assert_nonnull (f->proxy);
+  g_assert_true (DBUS_IS_G_PROXY (f->proxy));
 
   g_signal_connect (f->proxy, "destroy", G_CALLBACK (destroy_cb), f);
 
@@ -141,7 +141,7 @@ call_cb (DBusGProxy *proxy,
   gboolean found;
 
   found = g_hash_table_remove (f->in_flight, call);
-  g_assert (found);
+  g_assert_true (found);
   g_hash_table_insert (f->completed, call, call);
 }
 
@@ -155,7 +155,7 @@ test_method (Fixture *f,
 
   call = dbus_g_proxy_begin_call (f->proxy, "DoNothing", call_cb, f, NULL,
       G_TYPE_INVALID);
-  g_assert (call != NULL);
+  g_assert_nonnull (call);
   g_hash_table_insert (f->in_flight, call, call);
 
   while (g_hash_table_size (f->in_flight) > 0)
@@ -165,11 +165,11 @@ test_method (Fixture *f,
     }
 
   ok = g_hash_table_remove (f->completed, call);
-  g_assert (ok);
+  g_assert_true (ok);
   ok = dbus_g_proxy_end_call (f->proxy, call, &error,
       G_TYPE_INVALID);
   g_assert_no_error (error);
-  g_assert (ok);
+  g_assert_true (ok);
 }
 
 static void
@@ -187,12 +187,12 @@ test_disconnect (Fixture *f,
 
   fail = dbus_g_proxy_begin_call (f->proxy, "DoNothing", call_cb, f, NULL,
       G_TYPE_INVALID);
-  g_assert (fail == NULL);
+  g_assert_null (fail);
 
   ok = dbus_g_proxy_end_call (f->proxy, fail, &error,
       G_TYPE_INVALID);
   g_assert_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED);
-  g_assert (!ok);
+  g_assert_false (ok);
   g_clear_error (&error);
 
   while (!f->proxy_destroyed)

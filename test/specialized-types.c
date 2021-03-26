@@ -246,7 +246,7 @@ test_ao_slist (Fixture *f G_GNUC_UNUSED,
         GValue eltval = { 0, };
         GObject *obj = g_object_new (G_TYPE_OBJECT, NULL);
 
-        g_assert (obj != NULL);
+        g_assert_nonnull (obj);
         objects[i] = obj;
         g_object_add_weak_pointer (obj, (gpointer) (objects + i));
 
@@ -447,9 +447,9 @@ test_suo (Fixture *f G_GNUC_UNUSED,
                               2, &path,
                               G_MAXUINT);
 
-      g_assert (0 == strcmp (string, "foo"));
+      g_assert_cmpstr (string, ==, "foo");
       g_assert (intval == 42);
-      g_assert (0 == strcmp (path, "/bar/moo/foo/baz"));
+      g_assert_cmpstr (path, ==, "/bar/moo/foo/baz");
     }
 
     g_value_unset (&val);

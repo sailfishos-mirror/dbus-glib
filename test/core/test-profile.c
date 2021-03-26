@@ -613,7 +613,7 @@ read_and_drop_on_floor (int fd,
   char *allocated;
   char not_allocated[512+PAYLOAD_SIZE];
 
-  g_assert (count < (int) sizeof(not_allocated));
+  g_assert_cmpint (count, <, (int) sizeof (not_allocated));
   
   if (fake_malloc_overhead)
     {
@@ -671,7 +671,7 @@ write_junk (int fd,
   char *allocated;
   char not_allocated[512+PAYLOAD_SIZE] = { '\0', };
 
-  g_assert (count < (int) sizeof(not_allocated));
+  g_assert_cmpint (count, <, (int) sizeof (not_allocated));
   
   if (fake_malloc_overhead)
     {

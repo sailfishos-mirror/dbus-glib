@@ -2028,15 +2028,15 @@ assert_type_maps_to (GType gtype, const char *expected_sig)
 {
   char *sig;
   sig = _dbus_gtype_to_signature (gtype);
-  g_assert (sig != NULL);
-  g_assert (!strcmp (expected_sig, sig));
+  g_assert_nonnull (sig);
+  g_assert_cmpstr (expected_sig, ==, sig);
   g_free (sig);
 }
 
 static void
 assert_signature_maps_to (const char *sig, GType expected_gtype)
 {
-  g_assert (_dbus_gtype_from_signature (sig, TRUE) == expected_gtype);
+  g_assert_cmpuint (_dbus_gtype_from_signature (sig, TRUE), ==, expected_gtype);
 }
 
 static void
@@ -2074,26 +2074,26 @@ _dbus_gvalue_test (const char *test_data_dir)
   				DBUS_STRUCT_BEGIN_CHAR_AS_STRING DBUS_TYPE_INT32_AS_STRING DBUS_TYPE_STRING_AS_STRING DBUS_TYPE_OBJECT_PATH_AS_STRING DBUS_STRUCT_END_CHAR_AS_STRING );
 
   rectype = dbus_g_type_get_collection ("GArray", G_TYPE_UINT);
-  g_assert (rectype != G_TYPE_INVALID);
-  g_assert (!strcmp (g_type_name (rectype), "GArray_guint_"));
+  g_assert_cmpuint (rectype, !=, G_TYPE_INVALID);
+  g_assert_cmpstr (g_type_name (rectype), ==, "GArray_guint_");
 
   type = _dbus_gtype_from_signature ("au", TRUE);
-  g_assert (type == rectype);
+  g_assert_cmpuint (type, ==, rectype);
 
   rectype = dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_STRING);
-  g_assert (rectype != G_TYPE_INVALID);
-  g_assert (!strcmp (g_type_name (rectype), "GHashTable_gchararray+gchararray_"));
+  g_assert_cmpuint (rectype, !=, G_TYPE_INVALID);
+  g_assert_cmpstr (g_type_name (rectype), ==, "GHashTable_gchararray+gchararray_");
 
   type = _dbus_gtype_from_signature ("a{ss}", TRUE);
-  g_assert (type == rectype);
+  g_assert_cmpuint (type, ==, rectype);
 
   type = _dbus_gtype_from_signature ("o", FALSE);
-  g_assert (type == DBUS_TYPE_G_OBJECT_PATH);
+  g_assert_cmpuint (type, ==, DBUS_TYPE_G_OBJECT_PATH);
   type = _dbus_gtype_from_signature ("o", TRUE);
-  g_assert (type == DBUS_TYPE_G_OBJECT_PATH);
+  g_assert_cmpuint (type, ==, DBUS_TYPE_G_OBJECT_PATH);
 
   type = _dbus_gtype_from_signature ("g", TRUE);
-  g_assert (type == DBUS_TYPE_G_SIGNATURE);
+  g_assert_cmpuint (type, ==, DBUS_TYPE_G_SIGNATURE);
 
   return TRUE;
 }

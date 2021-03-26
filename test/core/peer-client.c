@@ -50,7 +50,7 @@ frobnicate_signal_handler (DBusGProxy *proxy, int val, void *user_data)
 {
   n_times_frobnicate_received += 1;
 
-  g_assert (val == 42);
+  g_assert_cmpint (val, ==, 42);
 
   g_main_loop_quit (loop);
   g_source_remove (exit_timeout);
@@ -95,7 +95,7 @@ main (int argc, char **argv)
     g_error ("Cannot open connection: %s", error->message);
   
   proxy = dbus_g_proxy_new_for_peer (conn, "/", "org.freedesktop.DBus.GLib.Tests.MyObject");
-  g_assert (proxy);
+  g_assert_nonnull (proxy);
 
   
   if (!dbus_g_proxy_call (proxy, "DoNothing", &error, G_TYPE_INVALID, G_TYPE_INVALID))

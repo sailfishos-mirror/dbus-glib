@@ -134,7 +134,7 @@ main (int    argc,
 
   proxy = dbus_g_proxy_new_for_name (connection, TEST_NAMESPACE, TEST_OBJECT_PATH,
                                      "org.freedesktop.DBus.GLib.Test.Interfaces.Hello");
-  g_assert (proxy != NULL);
+  g_assert_nonnull (proxy);
   success = org_freedesktop_DBus_GLib_Test_Interfaces_Hello_say_hello (proxy, &str, &error);
   g_object_unref (proxy);
 

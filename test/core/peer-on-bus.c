@@ -56,10 +56,10 @@ setup (Fixture *f,
     gconstpointer path_to_use)
 {
   f->bus = dbus_g_bus_get_private (DBUS_BUS_SESSION, NULL, NULL);
-  g_assert (f->bus != NULL);
+  g_assert_nonnull (f->bus);
 
   f->bus2 = dbus_g_bus_get_private (DBUS_BUS_SESSION, NULL, NULL);
-  g_assert (f->bus2 != NULL);
+  g_assert_nonnull (f->bus2);
 }
 
 static void

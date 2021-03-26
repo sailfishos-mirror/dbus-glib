@@ -169,7 +169,7 @@ frobnicate_signal_handler (DBusGProxy  *proxy,
 {
   n_times_frobnicate_received += 1;
 
-  g_assert (val == 42);
+  g_assert_cmpint (val, ==, 42);
   g_print ("Got Frobnicate signal\n");
 
   g_main_loop_quit (loop);
@@ -183,7 +183,7 @@ frobnicate_signal_handler_2 (DBusGProxy  *proxy,
 {
   n_times_frobnicate_received_2 += 1;
 
-  g_assert (val == 42);
+  g_assert_cmpint (val, ==, 42);
   g_print ("Got Frobnicate signal (again)\n");
 }
 
@@ -194,7 +194,7 @@ frobnicate_signal_handler_compat (DBusGProxy  *proxy,
 {
   n_times_compat_frobnicate_received += 1;
 
-  g_assert (val == 42);
+  g_assert_cmpint (val, ==, 42);
   g_print ("Got Frobnicate signal (compat)\n");
 
   g_main_loop_quit (loop);
@@ -210,11 +210,11 @@ sig0_signal_handler (DBusGProxy  *proxy,
 {
   n_times_sig0_received += 1;
 
-  g_assert (!strcmp (str0, "foo"));
+  g_assert_cmpstr (str0, ==, "foo");
 
-  g_assert (val == 22);
+  g_assert_cmpint (val, ==, 22);
 
-  g_assert (!strcmp (str1, "moo"));
+  g_assert_cmpstr (str1, ==, "moo");
 
   g_print ("Got Sig0 signal\n");
 
@@ -230,11 +230,11 @@ sig1_signal_handler (DBusGProxy  *proxy,
 {
   n_times_sig1_received += 1;
 
-  g_assert (!strcmp (str0, "baz"));
+  g_assert_cmpstr (str0, ==, "baz");
 
-  g_assert (G_VALUE_HOLDS_STRING (value));
+  g_assert_true (G_VALUE_HOLDS_STRING (value));
 
-  g_assert (!strcmp (g_value_get_string (value), "bar"));
+  g_assert_cmpstr (g_value_get_string (value), ==, "bar");
 
   g_print ("Got Sig1 signal\n");
 
@@ -249,12 +249,12 @@ sig2_signal_handler (DBusGProxy  *proxy,
 {
   n_times_sig2_received += 1;
 
-  g_assert (g_hash_table_size (table) == 2);
+  g_assert_cmpuint (g_hash_table_size (table), ==, 2);
 
-  g_assert (g_hash_table_lookup (table, "baz") != NULL);
-  g_assert (!strcmp (g_hash_table_lookup (table, "baz"), "cow"));
-  g_assert (g_hash_table_lookup (table, "bar") != NULL);
-  g_assert (!strcmp (g_hash_table_lookup (table, "bar"), "foo"));
+  g_assert_nonnull (g_hash_table_lookup (table, "baz"));
+  g_assert_cmpstr (g_hash_table_lookup (table, "baz"), ==, "cow");
+  g_assert_nonnull (g_hash_table_lookup (table, "bar"));
+  g_assert_cmpstr (g_hash_table_lookup (table, "bar"), ==, "foo");
 
   g_print ("Got Sig2 signal\n");
 
@@ -272,8 +272,8 @@ echo_received_cb (DBusGProxy *proxy,
   GError *error;
   char *echo_data;
 
-  g_assert (call == echo_call);
-  g_assert (data == NULL);
+  g_assert_true (call == echo_call);
+  g_assert_null (data);
 
   error = NULL;
   echo_data = NULL;
@@ -284,7 +284,7 @@ echo_received_cb (DBusGProxy *proxy,
 			      &echo_data,
 			      G_TYPE_INVALID))
     lose_gerror ("Failed to complete async Echo", error);
-  g_assert (echo_data != NULL);
+  g_assert_nonnull (echo_data);
   g_print ("Async echo gave \"%s\"\n", echo_data); 
   g_free (echo_data);
   g_main_loop_quit (loop);
@@ -299,7 +299,7 @@ increment_received_cb (DBusGProxy *proxy,
   GError *error;
   guint val;
 
-  g_assert (!strcmp (data, "moo"));
+  g_assert_cmpstr (data, ==, "moo");
 
   error = NULL;
   if (!dbus_g_proxy_end_call (proxy, call, &error,
@@ -343,8 +343,8 @@ test_base_class_get_all (DBusGConnection *connection,
 
   /* g_test_bug (19145); */
 
-  g_assert (expected_string_value != NULL);
-  g_assert (object_path != NULL);
+  g_assert_nonnull (expected_string_value);
+  g_assert_nonnull (object_path);
 
   /* Test GetAll with interfaces on the base class */
 
@@ -352,7 +352,7 @@ test_base_class_get_all (DBusGConnection *connection,
 				     "org.freedesktop.DBus.GLib.TestService",
 				     object_path,
 				     DBUS_INTERFACE_PROPERTIES);
-  g_assert (proxy != NULL);
+  g_assert_nonnull (proxy);
 
   g_print ("%s: Calling GetAll for unknown interface\n", object_path);
   {
@@ -434,7 +434,7 @@ test_subclass_get_all (DBusGConnection *connection,
 
   /* g_test_bug (19145); */
 
-  g_assert (object_path != NULL);
+  g_assert_nonnull (object_path);
 
   /* Test GetAll with interfaces on the subclass */
 
@@ -442,7 +442,7 @@ test_subclass_get_all (DBusGConnection *connection,
 				     "org.freedesktop.DBus.GLib.TestService",
 				     object_path,
 				     DBUS_INTERFACE_PROPERTIES);
-  g_assert (proxy != NULL);
+  g_assert_nonnull (proxy);
 
   g_print ("%s: Calling GetAll for subclass interface\n", object_path);
   {
@@ -600,11 +600,11 @@ main (int argc, char **argv)
   name_list_len = g_strv_length (name_list);
   while (i < name_list_len)
     {
-      g_assert (name_list[i] != NULL);
+      g_assert_nonnull (name_list[i]);
       g_print ("  %s\n", name_list[i]);
       ++i;
     }
-  g_assert (name_list[i] == NULL);
+  g_assert_null (name_list[i]);
 
   g_strfreev (name_list);
 
@@ -1112,7 +1112,7 @@ main (int argc, char **argv)
     g_print ("Calling (wrapped) many_uppercase\n");
     if (!org_freedesktop_DBus_GLib_Tests_MyObject_many_uppercase (proxy, strs, &strs_ret, &error)) 
       lose_gerror ("Failed to complete (wrapped) ManyUppercase call", error);
-    g_assert (strs_ret != NULL);
+    g_assert_nonnull (strs_ret);
     if (strcmp ("HELLO", strs_ret[0]) != 0)
       lose ("(wrapped) ManyUppercase call returned unexpected string %s", strs_ret[0]);
     if (strcmp ("HELLO", strs_ret[1]) != 0)
@@ -1199,15 +1199,15 @@ main (int argc, char **argv)
 			    G_TYPE_INVALID))
       lose_gerror ("Failed to complete SendCar call", error);
 
-    g_assert (vals_ret != NULL);
-    g_assert (vals_ret->n_values == 2);
+    g_assert_nonnull (vals_ret);
+    g_assert_cmpuint (vals_ret->n_values, ==, 2);
 
-    g_assert (G_VALUE_HOLDS_UINT (g_value_array_get_nth (vals_ret, 0)));
-    g_assert (g_value_get_uint (g_value_array_get_nth (vals_ret, 0)) == 43);
+    g_assert_true (G_VALUE_HOLDS_UINT (g_value_array_get_nth (vals_ret, 0)));
+    g_assert_cmpuint (g_value_get_uint (g_value_array_get_nth (vals_ret, 0)), ==, 43);
     
-    g_assert (G_VALUE_TYPE (g_value_array_get_nth (vals_ret, 1)) == DBUS_TYPE_G_OBJECT_PATH);
-    g_assert (!strcmp ("/org/freedesktop/DBus/GLib/Tests/MyTestObject2",
-		       g_value_get_boxed (g_value_array_get_nth (vals_ret, 1))));
+    g_assert_true (G_VALUE_TYPE (g_value_array_get_nth (vals_ret, 1)) == DBUS_TYPE_G_OBJECT_PATH);
+    g_assert_cmpstr ("/org/freedesktop/DBus/GLib/Tests/MyTestObject2", ==,
+                     g_value_get_boxed (g_value_array_get_nth (vals_ret, 1)));
 
     g_free (val);
     g_value_array_free (vals);
@@ -1260,18 +1260,18 @@ main (int argc, char **argv)
 			    G_TYPE_INVALID))
       lose_gerror ("Failed to complete ManyStringify call", error);
 
-    g_assert (ret_table != NULL);
-    g_assert (g_hash_table_size (ret_table) == 2);
+    g_assert_nonnull (ret_table);
+    g_assert_cmpuint (g_hash_table_size (ret_table), ==, 2);
 
     val = g_hash_table_lookup (ret_table, "foo");
-    g_assert (val != NULL);
-    g_assert (G_VALUE_HOLDS_STRING (val));
-    g_assert (!strcmp ("42", g_value_get_string (val)));
+    g_assert_nonnull (val);
+    g_assert_true (G_VALUE_HOLDS_STRING (val));
+    g_assert_cmpstr ("42", ==, g_value_get_string (val));
 
     val = g_hash_table_lookup (ret_table, "bar");
-    g_assert (val != NULL);
-    g_assert (G_VALUE_HOLDS_STRING (val));
-    g_assert (!strcmp ("hello", g_value_get_string (val)));
+    g_assert_nonnull (val);
+    g_assert_true (G_VALUE_HOLDS_STRING (val));
+    g_assert_cmpstr ("hello", ==, g_value_get_string (val));
 
     g_hash_table_destroy (table);
     g_hash_table_destroy (ret_table);
@@ -1312,19 +1312,19 @@ main (int argc, char **argv)
     g_free (g_ptr_array_index (in_array, 1));
     g_ptr_array_free (in_array, TRUE);
 
-    g_assert (out_array);
-    g_assert (out_array->len == 2);
+    g_assert_nonnull (out_array);
+    g_assert_cmpuint (out_array->len, ==, 2);
     uints = g_ptr_array_index (out_array, 0);
-    g_assert (uints);
-    g_assert (uints->len == 3);
-    g_assert (g_array_index (uints, guint, 0) == 10);
-    g_assert (g_array_index (uints, guint, 1) == 42);
-    g_assert (g_array_index (uints, guint, 2) == 27);
+    g_assert_nonnull (uints);
+    g_assert_cmpuint (uints->len, ==, 3);
+    g_assert_cmpuint (g_array_index (uints, guint, 0), ==, 10);
+    g_assert_cmpuint (g_array_index (uints, guint, 1), ==, 42);
+    g_assert_cmpuint (g_array_index (uints, guint, 2), ==, 27);
     g_array_free (uints, TRUE);
     uints = g_ptr_array_index (out_array, 1);
-    g_assert (uints);
-    g_assert (uints->len == 1);
-    g_assert (g_array_index (uints, guint, 0) == 30);
+    g_assert_nonnull (uints);
+    g_assert_cmpuint (uints->len, ==, 1);
+    g_assert_cmpuint (g_array_index (uints, guint, 0), ==, 30);
     g_array_free (uints, TRUE);
     g_ptr_array_free (out_array, TRUE);
   }
@@ -1520,40 +1520,40 @@ main (int argc, char **argv)
 			    G_TYPE_INVALID))
       lose_gerror ("Failed to complete DictOfDicts call", error);
 
-    g_assert (ret_table != NULL);
-    g_assert (g_hash_table_size (ret_table) == 2);
+    g_assert_nonnull (ret_table);
+    g_assert_cmpuint (g_hash_table_size (ret_table), ==, 2);
 
     subtable = g_hash_table_lookup (ret_table, "dict1");
-    g_assert(subtable);
-    g_assert (g_hash_table_size (subtable) == 3);
+    g_assert_nonnull (subtable);
+    g_assert_cmpuint (g_hash_table_size (subtable), ==, 3);
 
     val = g_hash_table_lookup (subtable, "foo");
-    g_assert (val != NULL);
-    g_assert (!strcmp ("dict1 1", val));
+    g_assert_nonnull (val);
+    g_assert_cmpstr ("dict1 1", ==, val);
 
     val = g_hash_table_lookup (subtable, "bar");
-    g_assert (val != NULL);
-    g_assert (!strcmp ("dict1 2", val));
+    g_assert_nonnull (val);
+    g_assert_cmpstr ("dict1 2", ==, val);
 
     val = g_hash_table_lookup (subtable, "baz");
-    g_assert (val != NULL);
-    g_assert (!strcmp ("dict1 3", val));
+    g_assert_nonnull (val);
+    g_assert_cmpstr ("dict1 3", ==, val);
 
     subtable = g_hash_table_lookup (ret_table, "dict2");
-    g_assert(subtable);
-    g_assert (g_hash_table_size (subtable) == 3);
+    g_assert_nonnull (subtable);
+    g_assert_cmpuint (g_hash_table_size (subtable), ==, 3);
 
     val = g_hash_table_lookup (subtable, "foo");
-    g_assert (val != NULL);
-    g_assert (!strcmp ("dict2 4", val));
+    g_assert_nonnull (val);
+    g_assert_cmpstr ("dict2 4", ==, val);
 
     val = g_hash_table_lookup (subtable, "bar");
-    g_assert (val != NULL);
-    g_assert (!strcmp ("dict2 5", val));
+    g_assert_nonnull (val);
+    g_assert_cmpstr ("dict2 5", ==, val);
 
     val = g_hash_table_lookup (subtable, "baz");
-    g_assert (val != NULL);
-    g_assert (!strcmp ("dict2 6", val));
+    g_assert_nonnull (val);
+    g_assert_cmpstr ("dict2 6", ==, val);
 
     g_hash_table_destroy (table);
     g_hash_table_destroy (ret_table);
@@ -1809,7 +1809,7 @@ main (int argc, char **argv)
 				     "org.freedesktop.DBus.GLib.TestService",
 				     "/org/freedesktop/DBus/GLib/Tests/MyTestObject",
 				     "org.freedesktop.DBus.GLib.Tests.MyObject");
-  g_assert (proxy != NULL);
+  g_assert_nonnull (proxy);
 
   proxy_destroyed = FALSE;
   proxy_destroy_and_nameowner = FALSE;
@@ -1912,7 +1912,7 @@ main (int argc, char **argv)
 				     "org.freedesktop.DBus.GLib.TestService",
 				     "/org/freedesktop/DBus/GLib/Tests/MyTestObject",
 				     "org.freedesktop.DBus.GLib.Tests.MyObject");
-  g_assert (proxy2 != NULL);
+  g_assert_nonnull (proxy2);
 
   dbus_g_proxy_add_signal (proxy2, "Frobnicate", G_TYPE_INT, G_TYPE_INVALID);
   
@@ -2074,8 +2074,8 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_STRING));
-    g_assert (!strcmp (g_value_get_string (&value), ""));
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_STRING));
+    g_assert_cmpstr (g_value_get_string (&value), ==, "");
     g_value_unset (&value);
   }
 
@@ -2101,8 +2101,8 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty no-touching call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_UINT));
-    g_assert (g_value_get_uint (&value) == 42);
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_UINT));
+    g_assert_cmpuint (g_value_get_uint (&value), ==, 42);
     g_value_unset (&value);
   }
 
@@ -2129,8 +2129,8 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_UINT));
-    g_assert (g_value_get_uint (&value) == 42);
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_UINT));
+    g_assert_cmpuint (g_value_get_uint (&value), ==, 42);
     g_value_unset (&value);
   }
 
@@ -2143,8 +2143,8 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_STRING));
-    g_assert (!strcmp (g_value_get_string (&value), "testing value"));
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_STRING));
+    g_assert_cmpstr (g_value_get_string (&value), ==, "testing value");
     g_value_unset (&value);
   }
 
@@ -2157,7 +2157,7 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE));
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE));
     g_value_unset (&value);
   }
 
@@ -2170,7 +2170,7 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE));
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE));
     g_value_unset (&value);
   }
 
@@ -2183,7 +2183,7 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed to complete GetProperty call", error);
-    g_assert (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE));
+    g_assert_true (G_VALUE_HOLDS (&value, G_TYPE_DOUBLE));
     g_value_unset (&value);
   }
 
@@ -2211,8 +2211,8 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed GetProperty call of \"should-be-hidden\" property", error);
-    g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
-    g_assert (g_value_get_boolean (&value) == FALSE);
+    g_assert_true (G_VALUE_HOLDS_BOOLEAN (&value));
+    g_assert_false (g_value_get_boolean (&value));
     g_value_unset (&value);
   }
 
@@ -2253,8 +2253,8 @@ main (int argc, char **argv)
                             G_TYPE_INVALID,
                             G_TYPE_VALUE, &value, G_TYPE_INVALID))
       lose_gerror ("Failed GetProperty call of \"should-be-hidden\" property", error);
-    g_assert (G_VALUE_HOLDS_BOOLEAN (&value));
-    g_assert (g_value_get_boolean (&value) == FALSE);
+    g_assert_true (G_VALUE_HOLDS_BOOLEAN (&value));
+    g_assert_false (g_value_get_boolean (&value));
     g_value_unset (&value);
   }
 
@@ -2278,7 +2278,7 @@ main (int argc, char **argv)
 
   /* Now, call disable_legacy_property_access */
 
-  g_assert (proxy == NULL);
+  g_assert_null (proxy);
   proxy = dbus_g_proxy_new_for_name_owner (connection,
                                            "org.freedesktop.DBus.GLib.TestService",
                                            "/org/freedesktop/DBus/GLib/Tests/MyTestObject",
@@ -2386,7 +2386,7 @@ main (int argc, char **argv)
     
     if (privconn == NULL)
       lose_gerror ("Failed to open private connection to bus", error);
-    g_assert (privconn != connection);
+    g_assert_true (privconn != connection);
     
     proxy = dbus_g_proxy_new_for_name (privconn,
                                        "org.freedesktop.DBus.GLib.TestService",

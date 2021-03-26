@@ -84,7 +84,7 @@ auth_result_cb (DBusGProxy *proxy,
 {
   Fixture *f = user_data;
 
-  g_assert (proxy == f->proxy);
+  g_assert_true (proxy == f->proxy);
   g_ptr_array_add (f->auth_results, g_strdup (res));
 }
 
@@ -101,14 +101,14 @@ setup (Fixture *f,
   f->service_gconn = dbus_g_bus_get_private (DBUS_BUS_SESSION, NULL,
       &f->error);
   g_assert_no_error (f->error);
-  g_assert (f->service_gconn != NULL);
+  g_assert_nonnull (f->service_gconn);
   f->service_conn = dbus_g_connection_get_connection (f->service_gconn);
 
   /* An attacker that intends to pretend to be that service. */
   f->attacker_gconn = dbus_g_bus_get_private (DBUS_BUS_SESSION, NULL,
       &f->error);
   g_assert_no_error (f->error);
-  g_assert (f->attacker_gconn != NULL);
+  g_assert_nonnull (f->attacker_gconn);
   f->attacker_conn = dbus_g_connection_get_connection (f->attacker_gconn);
 
   /* The service owns a well-known name. */
@@ -120,12 +120,12 @@ setup (Fixture *f,
   /* The victim of the attack. */
   f->client_gconn = dbus_g_bus_get_private (DBUS_BUS_SESSION, NULL, &f->error);
   g_assert_no_error (f->error);
-  g_assert (f->client_gconn != NULL);
+  g_assert_nonnull (f->client_gconn);
   f->client_conn = dbus_g_connection_get_connection (f->client_gconn);
 
   f->proxy = dbus_g_proxy_new_for_name (f->client_gconn, WELL_KNOWN_NAME,
       PATH, IFACE);
-  g_assert (DBUS_IS_G_PROXY (f->proxy));
+  g_assert_true (DBUS_IS_G_PROXY (f->proxy));
 
   /* The proxy is listening for the signal. */
   f->auth_results = g_ptr_array_new_with_free_func (g_free);
