@@ -435,7 +435,7 @@ _dbus_gtype_is_valid_hash_value (GType gtype)
 GHashFunc
 _dbus_g_hash_func_from_gtype (GType gtype)
 {
-  GHashFunc func;
+  GHashFunc func = NULL;
   gboolean ret;
   ret = hash_func_from_gtype (gtype, &func);
   g_assert (ret != FALSE);
