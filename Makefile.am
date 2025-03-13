@@ -12,6 +12,10 @@ DISTCLEANFILES = 		\
 
 EXTRA_DIST =			\
 	CONTRIBUTING.md		\
+	LICENSES/AFL-2.1.txt	\
+	LICENSES/GPL-2.0-or-later.txt	\
+	LICENSES/LGPL-2.1-or-later.txt	\
+	LICENSES/MIT.txt	\
 	NEWS			\
 	dbus-bus-introspect.xml \
 	dbus-glib-1.pc.in
