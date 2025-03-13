@@ -61,6 +61,14 @@ static gboolean proxy_destroy_and_nameowner_complete = FALSE;
 static DBusGProxy *test_terminate_proxy1 = NULL;
 static DBusGProxy *test_terminate_proxy2 = NULL;
 
+static GType
+deprecated_value_array_type (void)
+{
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  return g_value_array_get_type ();
+  G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
 static void
 cancel_exit_timeout (void)
 {
@@ -1174,6 +1182,7 @@ main (int argc, char **argv)
     GValueArray *vals_ret;
     GValue *val;
 
+    G_GNUC_BEGIN_IGNORE_DEPRECATIONS
     vals = g_value_array_new (3);
 
     g_value_array_append (vals, NULL);
@@ -1190,19 +1199,21 @@ main (int argc, char **argv)
     g_value_init (val, G_TYPE_UCHAR);
     g_value_set_uchar (val, '!');
     g_value_set_boxed (g_value_array_get_nth (vals, vals->n_values - 1), val);
+    G_GNUC_END_IGNORE_DEPRECATIONS
 
     vals_ret = NULL;
     g_print ("Calling SendCar\n");
     if (!dbus_g_proxy_call (proxy, "SendCar", &error,
-			    G_TYPE_VALUE_ARRAY, vals,
+			    deprecated_value_array_type (), vals,
 			    G_TYPE_INVALID,
-			    G_TYPE_VALUE_ARRAY, &vals_ret,
+			    deprecated_value_array_type (), &vals_ret,
 			    G_TYPE_INVALID))
       lose_gerror ("Failed to complete SendCar call", error);
 
     g_assert_nonnull (vals_ret);
     g_assert_cmpuint (vals_ret->n_values, ==, 2);
 
+    G_GNUC_BEGIN_IGNORE_DEPRECATIONS
     g_assert_true (G_VALUE_HOLDS_UINT (g_value_array_get_nth (vals_ret, 0)));
     g_assert_cmpuint (g_value_get_uint (g_value_array_get_nth (vals_ret, 0)), ==, 43);
     
@@ -1213,6 +1224,7 @@ main (int argc, char **argv)
     g_free (val);
     g_value_array_free (vals);
     g_value_array_free (vals_ret);
+    G_GNUC_END_IGNORE_DEPRECATIONS
   }
 
   {

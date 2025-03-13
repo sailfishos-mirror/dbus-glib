@@ -1143,7 +1143,12 @@ dbus_g_type_get_lookup_function (GType gtype)
 
   MAP_KNOWN(G_TYPE_VALUE);
   MAP_KNOWN(G_TYPE_STRV);
-  MAP_KNOWN(G_TYPE_VALUE_ARRAY);
+
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  if (gtype == g_value_array_get_type ())
+    return g_strdup ("G_TYPE_VALUE_ARRAY");
+  G_GNUC_END_IGNORE_DEPRECATIONS
+
   MAP_KNOWN(DBUS_TYPE_G_PROXY);
   MAP_KNOWN(DBUS_TYPE_G_OBJECT_PATH);
   MAP_KNOWN(DBUS_TYPE_G_SIGNATURE);

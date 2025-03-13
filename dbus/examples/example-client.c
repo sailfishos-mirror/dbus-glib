@@ -6,6 +6,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+static GType
+deprecated_value_array_type (void)
+{
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  return g_value_array_get_type ();
+  G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
 static void lose (const char *fmt, ...) G_GNUC_NORETURN G_GNUC_PRINTF (1, 2);
 static void lose_gerror (const char *prefix, GError *error) G_GNUC_NORETURN;
 
@@ -77,7 +85,7 @@ main (int argc, char **argv)
   
   if (!dbus_g_proxy_call (remote_object, "GetTuple", &error,
 			  G_TYPE_INVALID,
-			  G_TYPE_VALUE_ARRAY, &hello_reply_struct, G_TYPE_INVALID))
+			  deprecated_value_array_type (), &hello_reply_struct, G_TYPE_INVALID))
     lose_gerror ("Failed to complete GetTuple", error);
   
   if (!dbus_g_proxy_call (remote_object, "GetDict", &error,
@@ -96,12 +104,16 @@ main (int argc, char **argv)
       GValue strval = { 0, };
 
       g_value_init (&strval, G_TYPE_STRING);
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       if (!g_value_transform (g_value_array_get_nth (hello_reply_struct, i), &strval))
 	g_value_set_static_string (&strval, "(couldn't transform to string)");
       g_print ("%s: %s\n", g_type_name (G_VALUE_TYPE (g_value_array_get_nth (hello_reply_struct, i))),
 	       g_value_get_string (&strval));
+      G_GNUC_END_IGNORE_DEPRECATIONS
     }
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_value_array_free (hello_reply_struct);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   printf ("\n");
 
   g_hash_table_foreach (hello_reply_dict, print_hash_value, NULL);

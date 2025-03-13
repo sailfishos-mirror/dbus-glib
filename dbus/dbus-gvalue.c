@@ -38,6 +38,14 @@
 /* Seems reasonable, but this should probably be part of the standard protocol */
 #define DBUS_GLIB_MAX_VARIANT_RECURSION 32
 
+static GType
+deprecated_value_array_type (void)
+{
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  return g_value_array_get_type ();
+  G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
 static gboolean demarshal_static_variant (DBusGValueMarshalCtx    *context,
 					  DBusMessageIter         *iter,
 					  GValue                  *value,
@@ -506,7 +514,7 @@ _dbus_gvalue_to_signature (const GValue *val)
   GType gtype;
 
   gtype = G_VALUE_TYPE (val);
-  if (g_type_is_a (gtype, G_TYPE_VALUE_ARRAY))
+  if (g_type_is_a (gtype, deprecated_value_array_type ()))
     {
       GString *str;
       guint i;
@@ -518,7 +526,9 @@ _dbus_gvalue_to_signature (const GValue *val)
       for (i = 0; i < array->n_values; i++)
 	{
 	  char *sig;
+	  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	  sig = _dbus_gvalue_to_signature (g_value_array_get_nth (array, i));
+	  G_GNUC_END_IGNORE_DEPRECATIONS
 	  g_string_append (str, sig);
 	  g_free (sig);
 	}
@@ -895,7 +905,9 @@ demarshal_valuearray (DBusGValueMarshalCtx    *context,
 
   dbus_message_iter_recurse (iter, &subiter);
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   ret = g_value_array_new (12);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   while ((current_type = dbus_message_iter_get_arg_type (&subiter)) != DBUS_TYPE_INVALID)
     {
@@ -903,15 +915,19 @@ demarshal_valuearray (DBusGValueMarshalCtx    *context,
       GType elt_type; 
       char *current_sig;
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_value_array_append (ret, NULL);
       val = g_value_array_get_nth (ret, ret->n_values - 1);
+      G_GNUC_END_IGNORE_DEPRECATIONS
 
       current_sig = dbus_message_iter_get_signature (&subiter);
       elt_type = _dbus_gtype_from_signature (current_sig, TRUE);
 
       if (elt_type == G_TYPE_INVALID)
 	{
+	  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	  g_value_array_free (ret);
+	  G_GNUC_END_IGNORE_DEPRECATIONS
 	  g_set_error (error,
 		       DBUS_GERROR,
 		       DBUS_GERROR_INVALID_ARGS,
@@ -925,7 +941,9 @@ demarshal_valuearray (DBusGValueMarshalCtx    *context,
 
       if (!_dbus_gvalue_demarshal (context, &subiter, val, error))
 	{
+	  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	  g_value_array_free (ret);
+	  G_GNUC_END_IGNORE_DEPRECATIONS
 	  return FALSE;
 	}
 
@@ -1098,7 +1116,7 @@ get_type_demarshaller (GType type)
   typedata = g_type_get_qdata (type, dbus_g_type_metadata_data_quark ());
   if (typedata == NULL)
     {
-      if (g_type_is_a (type, G_TYPE_VALUE_ARRAY))
+      if (g_type_is_a (type, deprecated_value_array_type ()))
 	return demarshal_valuearray;
       if (dbus_g_type_is_collection (type))
 	return demarshal_collection;
@@ -1299,7 +1317,9 @@ _dbus_gvalue_demarshal_message  (DBusGValueMarshalCtx    *context,
   int current_type;
   guint index_;
   
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   ret = g_value_array_new (6);  /* 6 is a typical maximum for arguments */
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   dbus_message_iter_init (message, &iter);
   index_ = 0;
@@ -1316,8 +1336,10 @@ _dbus_gvalue_demarshal_message  (DBusGValueMarshalCtx    *context,
 	  goto lose;
 	}
       
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_value_array_append (ret, NULL);
       value = g_value_array_get_nth (ret, index_);
+      G_GNUC_END_IGNORE_DEPRECATIONS
 
       gtype = types[index_]; 
       g_value_init (value, gtype);
@@ -1337,7 +1359,9 @@ _dbus_gvalue_demarshal_message  (DBusGValueMarshalCtx    *context,
 
   return ret;
  lose:
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_value_array_free (ret);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   return NULL;
 }
 
@@ -1537,7 +1561,7 @@ marshal_valuearray (DBusMessageIter   *iter,
   guint i;
   DBusMessageIter subiter;
 
-  g_assert (G_VALUE_TYPE (value) == G_TYPE_VALUE_ARRAY);
+  g_assert (G_VALUE_TYPE (value) == deprecated_value_array_type ());
 
   array = g_value_get_boxed (value);
 
@@ -1551,11 +1575,13 @@ marshal_valuearray (DBusMessageIter   *iter,
     {
       for (i = 0; i < array->n_values; i++)
         {
+          G_GNUC_BEGIN_IGNORE_DEPRECATIONS
           if (!_dbus_gvalue_marshal (&subiter, g_value_array_get_nth (array, i)))
             {
               dbus_message_iter_abandon_container (iter, &subiter);
               return FALSE;
             }
+          G_GNUC_END_IGNORE_DEPRECATIONS
         }
     }
 
@@ -1846,7 +1872,7 @@ get_type_marshaller (GType type)
   typedata = g_type_get_qdata (type, dbus_g_type_metadata_data_quark ());
   if (typedata == NULL)
     {
-      if (g_type_is_a (type, G_TYPE_VALUE_ARRAY))
+      if (g_type_is_a (type, deprecated_value_array_type ()))
 	return marshal_valuearray;
       if (dbus_g_type_is_collection (type))
 	return marshal_collection;

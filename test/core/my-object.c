@@ -602,6 +602,7 @@ my_object_str_hash_len (MyObject *obj, GHashTable *table, guint *len, GError **e
 gboolean
 my_object_send_car (MyObject *obj, GValueArray *invals, GValueArray **outvals, GError **error)
 {
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   if (invals->n_values != 3
       || G_VALUE_TYPE (g_value_array_get_nth (invals, 0)) != G_TYPE_STRING
       || G_VALUE_TYPE (g_value_array_get_nth (invals, 1)) != G_TYPE_UINT
@@ -622,6 +623,7 @@ my_object_send_car (MyObject *obj, GValueArray *invals, GValueArray **outvals, G
   g_value_init (g_value_array_get_nth (*outvals, (*outvals)->n_values - 1), DBUS_TYPE_G_OBJECT_PATH);
   g_value_set_boxed (g_value_array_get_nth (*outvals, (*outvals)->n_values - 1),
 		     g_strdup ("/org/freedesktop/DBus/GLib/Tests/MyTestObject2"));
+  G_GNUC_END_IGNORE_DEPRECATIONS
   return TRUE;
 }
 

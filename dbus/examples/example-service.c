@@ -85,6 +85,7 @@ some_object_hello_world (SomeObject *obj, const char *hello_message, char ***ret
 gboolean
 some_object_get_tuple (SomeObject *obj, GValueArray **ret, GError **error)
 {
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   *ret = g_value_array_new (6);
   g_value_array_prepend (*ret, NULL);
   g_value_init (g_value_array_get_nth (*ret, 0), G_TYPE_STRING);
@@ -92,6 +93,7 @@ some_object_get_tuple (SomeObject *obj, GValueArray **ret, GError **error)
   g_value_array_prepend (*ret, NULL);
   g_value_init (g_value_array_get_nth (*ret, 0), G_TYPE_UINT);
   g_value_set_uint (g_value_array_get_nth (*ret, 0), 42);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   
   return TRUE;
 }

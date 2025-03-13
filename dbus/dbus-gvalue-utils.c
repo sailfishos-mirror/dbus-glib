@@ -298,6 +298,14 @@ unset_and_free_g_value (gpointer val)
 static gboolean
 gtype_can_simple_free (GType type);
 
+static GType
+deprecated_value_array_type (void)
+{
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+  return g_value_array_get_type ();
+  G_GNUC_END_IGNORE_DEPRECATIONS
+}
+
 static gboolean
 hash_simple_free_from_gtype (GType gtype, GDestroyNotify *func)
 {
@@ -320,9 +328,11 @@ hash_simple_free_from_gtype (GType gtype, GDestroyNotify *func)
 	  *func = unset_and_free_g_value;
 	  return TRUE;
 	}
-      else if (gtype == G_TYPE_VALUE_ARRAY)
+      else if (gtype == deprecated_value_array_type ())
         {
+          G_GNUC_BEGIN_IGNORE_DEPRECATIONS
           *func = (GDestroyNotify) g_value_array_free;
+          G_GNUC_END_IGNORE_DEPRECATIONS
           return TRUE;
         }
       else if (gtype == G_TYPE_STRV)
@@ -770,12 +780,16 @@ valuearray_constructor (GType type)
   GValueArray *ret;
   guint size = dbus_g_type_get_struct_size (type);
   guint i;
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   ret = g_value_array_new (size);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   for (i=0; i < size; i++)
     {
       GValue val = {0,};
       g_value_init (&val, dbus_g_type_get_struct_member_type (type, i));
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_value_array_append(ret, &val);
+      G_GNUC_END_IGNORE_DEPRECATIONS
     }
   return (gpointer)ret;
 }
@@ -783,13 +797,17 @@ valuearray_constructor (GType type)
 static gpointer
 valuearray_copy (GType type, gpointer src)
 {
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   return g_value_array_copy ((GValueArray*) src);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
 valuearray_simple_free (gpointer val)
 {
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_value_array_free (val);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static gboolean
@@ -800,7 +818,9 @@ valuearray_get_member (GType type, gpointer instance,
   const GValue *val;
   if (member < dbus_g_type_get_struct_size (type))
     {
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       val = g_value_array_get_nth (va, member);
+      G_GNUC_END_IGNORE_DEPRECATIONS
       g_value_copy (val, ret);
       return TRUE;
     }
@@ -816,7 +836,9 @@ valuearray_set_member (GType type, gpointer instance,
   GValue *vp;
   if (member < dbus_g_type_get_struct_size (type))
     {
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       vp = g_value_array_get_nth (va, member);
+      G_GNUC_END_IGNORE_DEPRECATIONS
       g_value_copy (member_type, vp);
       return TRUE;
     }

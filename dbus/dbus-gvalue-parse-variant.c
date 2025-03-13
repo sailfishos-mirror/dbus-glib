@@ -264,7 +264,9 @@ dbus_g_value_tuple_parse_variant (GVariant *variant,
   gsize n = g_variant_type_n_items (variant_type);
   GType *types;
   gsize i;
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   GValueArray *va = g_value_array_new (n);
+  G_GNUC_END_IGNORE_DEPRECATIONS
   const GVariantType *inner_type;
 
   types = g_new0 (GType, n);
@@ -280,7 +282,9 @@ dbus_g_value_tuple_parse_variant (GVariant *variant,
       else
         inner_variant = g_variant_get_child_value (variant, i);
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_value_array_append (va, NULL);
+      G_GNUC_END_IGNORE_DEPRECATIONS
       dbus_g_value_parse_variant_by_type (inner_variant, inner_type,
                                           &va->values[i]);
       types[i] = G_VALUE_TYPE (&va->values[i]);
@@ -292,9 +296,15 @@ dbus_g_value_tuple_parse_variant (GVariant *variant,
   g_value_init (value, dbus_g_type_get_structv ("GValueArray", n, types));
 
   if (variant == NULL)
-    g_value_array_free (va);
+    {
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+      g_value_array_free (va);
+      G_GNUC_END_IGNORE_DEPRECATIONS
+    }
   else
-    g_value_take_boxed (value, va);
+    {
+      g_value_take_boxed (value, va);
+    }
 
   g_free (types);
 }

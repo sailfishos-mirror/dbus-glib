@@ -1737,14 +1737,18 @@ marshal_dbus_message_to_g_marshaller (GClosure     *closure,
   if (value_array == NULL)
     return;
   
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_value_array_prepend (value_array, NULL);
   g_value_init (g_value_array_get_nth (value_array, 0), G_TYPE_FROM_INSTANCE (proxy));
   g_value_set_instance (g_value_array_get_nth (value_array, 0), proxy);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   g_cclosure_marshal_generic (closure, return_value, value_array->n_values,
       value_array->values, invocation_hint, marshal_data);
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   g_value_array_free (value_array);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 static void
@@ -1861,6 +1865,7 @@ d_pending_call_free (void *data)
 
 #define DBUS_G_VALUE_ARRAY_COLLECT_ALL(VALARRAY, FIRST_ARG_TYPE, ARGS) \
 G_STMT_START { \
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS \
   GType valtype; \
   guint i = 0; \
   \
@@ -1891,6 +1896,7 @@ G_STMT_START { \
       valtype = va_arg (ARGS, GType); \
       i++; \
     } \
+  G_GNUC_END_IGNORE_DEPRECATIONS \
 } G_STMT_END
 
 DBusGProxyCall *
@@ -1927,7 +1933,9 @@ manager_begin_bus_call (DBusGProxyManager    *manager,
       call_id = dbus_g_proxy_begin_call_internal (manager->bus_proxy, method,
           notify, user_data, destroy, arg_values, -1);
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_value_array_free (arg_values);
+      G_GNUC_END_IGNORE_DEPRECATIONS
     }
 
   va_end (args);
@@ -2331,7 +2339,9 @@ dbus_g_proxy_marshal_args_to_message (DBusGProxy  *proxy,
     {
       GValue *gvalue;
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       gvalue = g_value_array_get_nth (args, i);
+      G_GNUC_END_IGNORE_DEPRECATIONS
 
       if (!_dbus_gvalue_marshal (&msgiter, gvalue))
         {
@@ -2641,7 +2651,9 @@ dbus_g_proxy_begin_call (DBusGProxy          *proxy,
       call_id = dbus_g_proxy_begin_call_internal (proxy, method, notify,
           user_data, destroy, arg_values, priv->default_timeout);
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_value_array_free (arg_values);
+      G_GNUC_END_IGNORE_DEPRECATIONS
     }
 
   va_end (args);
@@ -2709,7 +2721,9 @@ dbus_g_proxy_begin_call_with_timeout (DBusGProxy          *proxy,
       call_id = dbus_g_proxy_begin_call_internal (proxy, method, notify,
           user_data, destroy, arg_values, timeout);
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_value_array_free (arg_values);
+      G_GNUC_END_IGNORE_DEPRECATIONS
     }
 
   va_end (args);
@@ -2818,7 +2832,9 @@ dbus_g_proxy_call (DBusGProxy        *proxy,
       call_id = dbus_g_proxy_begin_call_internal (proxy, method, NULL, NULL,
           NULL, in_args, priv->default_timeout);
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_value_array_free (in_args);
+      G_GNUC_END_IGNORE_DEPRECATIONS
     }
 
   first_arg_type = va_arg (args, GType);
@@ -2881,7 +2897,9 @@ dbus_g_proxy_call_with_timeout (DBusGProxy        *proxy,
       call_id = dbus_g_proxy_begin_call_internal (proxy, method, NULL, NULL,
           NULL, in_args, timeout);
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_value_array_free (in_args);
+      G_GNUC_END_IGNORE_DEPRECATIONS
     }
 
   first_arg_type = va_arg (args, GType);
@@ -2938,7 +2956,9 @@ dbus_g_proxy_call_no_reply (DBusGProxy               *proxy,
     {
       message = dbus_g_proxy_marshal_args_to_message (proxy, method, in_args);
 
+      G_GNUC_BEGIN_IGNORE_DEPRECATIONS
       g_value_array_free (in_args);
+      G_GNUC_END_IGNORE_DEPRECATIONS
     }
 
   va_end (args);
