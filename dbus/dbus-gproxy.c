@@ -137,7 +137,7 @@ typedef struct
  */
 struct _DBusGProxyManager
 {
-  GStaticMutex lock; /**< Thread lock */
+  GMutex lock; /**< Thread lock */
   int refcount;      /**< Reference count */
   DBusConnection *connection; /**< Connection we're associated with. */
 
@@ -169,14 +169,14 @@ static DBusHandlerResult  dbus_g_proxy_manager_filter (DBusConnection    *connec
 
 
 /** Lock the DBusGProxyManager */
-#define LOCK_MANAGER(mgr)   (g_static_mutex_lock (&(mgr)->lock))
+#define LOCK_MANAGER(mgr)   (g_mutex_lock (&(mgr)->lock))
 /** Unlock the DBusGProxyManager */
-#define UNLOCK_MANAGER(mgr) (g_static_mutex_unlock (&(mgr)->lock))
+#define UNLOCK_MANAGER(mgr) (g_mutex_unlock (&(mgr)->lock))
 
 static int g_proxy_manager_slot = -1;
 
 /* Lock controlling get/set manager as data on each connection */
-static GStaticMutex connection_g_proxy_lock = G_STATIC_MUTEX_INIT;
+static GMutex connection_g_proxy_lock;
 
 static DBusGProxyManager*
 dbus_g_proxy_manager_get (DBusConnection *connection)
@@ -187,14 +187,14 @@ dbus_g_proxy_manager_get (DBusConnection *connection)
   if (g_proxy_manager_slot < 0)
     g_error ("out of memory");
   
-  g_static_mutex_lock (&connection_g_proxy_lock);
+  g_mutex_lock (&connection_g_proxy_lock);
   
   manager = dbus_connection_get_data (connection, g_proxy_manager_slot);
   if (manager != NULL)
     {
       dbus_connection_free_data_slot (&g_proxy_manager_slot);
       dbus_g_proxy_manager_ref (manager);
-      g_static_mutex_unlock (&connection_g_proxy_lock);
+      g_mutex_unlock (&connection_g_proxy_lock);
       return manager;
     }
   
@@ -203,7 +203,7 @@ dbus_g_proxy_manager_get (DBusConnection *connection)
   manager->refcount = 1;
   manager->connection = connection;
 
-  g_static_mutex_init (&manager->lock);
+  g_mutex_init (&manager->lock);
 
   /* Proxy managers keep the connection alive, which means that
    * DBusGProxy indirectly does. To free a connection you have to free
@@ -217,7 +217,7 @@ dbus_g_proxy_manager_get (DBusConnection *connection)
   dbus_connection_add_filter (connection, dbus_g_proxy_manager_filter,
                               manager, NULL);
   
-  g_static_mutex_unlock (&connection_g_proxy_lock);
+  g_mutex_unlock (&connection_g_proxy_lock);
   
   return manager;
 }
@@ -287,9 +287,9 @@ dbus_g_proxy_manager_unref (DBusGProxyManager *manager)
 
       g_assert (manager->unassociated_proxies == NULL);
       
-      g_static_mutex_free (&manager->lock);
+      g_mutex_clear (&manager->lock);
 
-      g_static_mutex_lock (&connection_g_proxy_lock);
+      g_mutex_lock (&connection_g_proxy_lock);
 
       dbus_connection_remove_filter (manager->connection, dbus_g_proxy_manager_filter,
                                      manager);
@@ -298,7 +298,7 @@ dbus_g_proxy_manager_unref (DBusGProxyManager *manager)
                                 g_proxy_manager_slot,
                                 NULL, NULL);
 
-      g_static_mutex_unlock (&connection_g_proxy_lock);
+      g_mutex_unlock (&connection_g_proxy_lock);
       
       dbus_connection_unref (manager->connection);
       g_free (manager);
