@@ -1,5 +1,10 @@
 dbus-glib is deprecated, please use GDBus in new GLib-based projects.
 
+dbus-glib 0.116 (UNRELEASED)
+============================
+
+...
+
 dbus-glib 0.114 (2025-03-13)
 ============================
 
