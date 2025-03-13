@@ -22,7 +22,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-image: debian:buster-slim
+image: debian:bookworm-slim
 
 stages:
   - build
@@ -35,11 +35,11 @@ variables:
   ci_parallel: "2"
   ci_sudo: "yes"
   ci_distro: "debian"
-  ci_suite: "buster"
+  ci_suite: "bookworm"
 
 build:production:
   stage: build
-  image: "debian:buster-slim"
+  image: "debian:bookworm-slim"
   variables:
     ci_variant: "production"
   script: &script
@@ -48,24 +48,32 @@ build:production:
 
 build:debug:
   stage: build
-  image: "debian:buster-slim"
+  image: "debian:bookworm-slim"
   variables:
     ci_variant: "debug"
   script: *script
 
-build:stretch:
+build:trixie:
   stage: build
-  image: "debian:stretch-slim"
+  image: "debian:trixie-slim"
   variables:
-    ci_suite: "stretch"
+    ci_suite: "trixie"
   script: *script
 
-build:xenial:
+build:noble:
   stage: build
-  image: "ubuntu:xenial"
+  image: "ubuntu:noble"
   variables:
     ci_distro: "ubuntu"
-    ci_suite: "xenial"
+    ci_suite: "noble"
+  script: *script
+
+build:jammy:
+  stage: build
+  image: "ubuntu:jammy"
+  variables:
+    ci_distro: "ubuntu"
+    ci_suite: "jammy"
   script: *script
 
 # vim:set sw=2 sts=2 et:

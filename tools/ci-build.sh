@@ -36,7 +36,7 @@ NULL=
 # ci_distro:
 # OS distribution in which we are testing
 # Typical values: ubuntu, debian; maybe fedora in future
-: "${ci_distro:=ubuntu}"
+: "${ci_distro:=debian}"
 
 # ci_docker:
 # If non-empty, this is the name of a Docker image. ci-install.sh will
@@ -44,7 +44,7 @@ NULL=
 # named "ci-image" in which we will do our testing.
 #
 # If empty, we test on "bare metal".
-# Typical values: ubuntu:xenial, debian:jessie-slim
+# Typical values: ubuntu:noble, debian:bookworm-slim
 : "${ci_docker:=}"
 
 # ci_host:
@@ -63,7 +63,7 @@ NULL=
 # OS suite (release, branch) in which we are testing.
 # Typical values for ci_distro=debian: sid, jessie
 # Typical values for ci_distro=fedora might be 25, rawhide
-: "${ci_suite:=xenial}"
+: "${ci_suite:=bookworm}"
 
 # ci_test:
 # If yes, run tests; if no, just build

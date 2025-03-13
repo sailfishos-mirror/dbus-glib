@@ -32,7 +32,7 @@ NULL=
 # ci_distro:
 # OS distribution in which we are testing
 # Typical values: ubuntu, debian; maybe fedora in future
-: "${ci_distro:=ubuntu}"
+: "${ci_distro:=debian}"
 
 # ci_docker:
 # If non-empty, this is the name of a Docker image. ci-install.sh will
@@ -54,7 +54,7 @@ NULL=
 # OS suite (release, branch) in which we are testing.
 # Typical values for ci_distro=debian: sid, jessie
 # Typical values for ci_distro=fedora might be 25, rawhide
-: "${ci_suite:=xenial}"
+: "${ci_suite:=bookworm}"
 
 if [ $(id -u) = 0 ]; then
     sudo=
@@ -75,11 +75,6 @@ case "$ci_distro" in
     (debian|ubuntu)
         # Don't ask questions, just do it
         sudo="$sudo env DEBIAN_FRONTEND=noninteractive"
-
-        # Debian Docker images use httpredir.debian.org but it seems to be
-        # unreliable; use a CDN instead
-        $sudo sed -i -e 's/httpredir\.debian\.org/deb.debian.org/g' \
-            /etc/apt/sources.list
 
         $sudo apt-get -qq -y update
 
@@ -112,17 +107,6 @@ case "$ci_distro" in
             echo "user ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/nopasswd
             chmod 0440 /etc/sudoers.d/nopasswd
         fi
-
-        case "$ci_suite" in
-            (jessie|xenial)
-                # Debian 9's autoconf-archive is too old, and older
-                # gnome-common has files in common with it.
-                wget http://deb.debian.org/debian/pool/main/a/autoconf-archive/autoconf-archive_20160916-1_all.deb
-                wget http://deb.debian.org/debian/pool/main/g/gnome-common/gnome-common_3.18.0-3_all.deb
-                $sudo dpkg -i --auto-deconfigure gnome-common_*_all.deb autoconf-archive_*_all.deb
-                rm autoconf-archive_*_all.deb gnome-common_*_all.deb
-                ;;
-        esac
         ;;
 
     (*)
