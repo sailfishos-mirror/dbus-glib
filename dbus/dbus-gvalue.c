@@ -1383,7 +1383,7 @@ marshal_basic (DBusMessageIter *iter, const GValue *value)
     {
     case G_TYPE_CHAR:
       {
-        char b = g_value_get_char (value);
+        char b = g_value_get_schar (value);
         if (!dbus_message_iter_append_basic (iter,
                                              DBUS_TYPE_BYTE,
                                              &b))

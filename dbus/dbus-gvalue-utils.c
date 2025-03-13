@@ -84,7 +84,7 @@ _dbus_gvalue_store (GValue          *value,
   switch (g_type_fundamental (G_VALUE_TYPE (value)))
     {
     case G_TYPE_CHAR:
-      *((gchar *) storage) = g_value_get_char (value);
+      *((gchar *) storage) = g_value_get_schar (value);
       return TRUE;
     case G_TYPE_UCHAR:
       *((guchar *) storage) = g_value_get_uchar (value);
@@ -135,7 +135,7 @@ _dbus_gvalue_set_from_pointer (GValue          *value,
   switch (g_type_fundamental (G_VALUE_TYPE (value)))
     {
     case G_TYPE_CHAR:
-      g_value_set_char (value, *((gchar *) storage));
+      g_value_set_schar (value, *((gchar *) storage));
       return TRUE;
     case G_TYPE_UCHAR:
       g_value_set_uchar (value, *((guchar *) storage));
@@ -517,7 +517,7 @@ gvalue_take_hash_value (GValue *value, gpointer instance)
   switch (g_type_fundamental (G_VALUE_TYPE (value)))
     {
     case G_TYPE_CHAR:
-      g_value_set_char (value, (gchar) GPOINTER_TO_INT (instance));
+      g_value_set_schar (value, (gchar) GPOINTER_TO_INT (instance));
       break;
     case G_TYPE_UCHAR:
       g_value_set_uchar (value, (guchar) GPOINTER_TO_UINT (instance));
@@ -548,7 +548,7 @@ hash_value_from_gvalue (GValue *value)
   switch (g_type_fundamental (G_VALUE_TYPE (value)))
     {
     case G_TYPE_CHAR:
-      return GINT_TO_POINTER ((int) g_value_get_char (value));
+      return GINT_TO_POINTER ((int) g_value_get_schar (value));
       break;
     case G_TYPE_UCHAR:
       return GUINT_TO_POINTER ((guint) g_value_get_uchar (value));
@@ -903,7 +903,7 @@ array_iterator (GType garray_type,
             break;
 
           case G_TYPE_CHAR:
-            g_value_set_char (&val, g_array_index (array, gchar, i));
+            g_value_set_schar (&val, g_array_index (array, gchar, i));
             break;
 
           case G_TYPE_UCHAR:
@@ -983,7 +983,7 @@ array_append (DBusGTypeSpecializedAppendContext *ctx,
         break;
 
       case G_TYPE_CHAR:
-        tmp.c = g_value_get_char (value);
+        tmp.c = g_value_get_schar (value);
         g_array_append_val (array, tmp.c);
         break;
 
