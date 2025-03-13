@@ -102,7 +102,7 @@ typedef struct
   GType code_enum;
 } DBusGErrorInfo;
 
-static GStaticRWLock globals_lock = G_STATIC_RW_LOCK_INIT;
+static GRWLock globals_lock;
 /* See comments in check_property_access */
 static gboolean disable_legacy_property_access = FALSE;
 static GData *error_metadata = NULL;
@@ -1477,14 +1477,14 @@ gerror_domaincode_to_dbus_error_name (const DBusGObjectInfo *object_info,
     {
       DBusGErrorInfo *info;
 
-      g_static_rw_lock_reader_lock (&globals_lock);
+      g_rw_lock_reader_lock (&globals_lock);
 
       if (error_metadata != NULL)
 	info = g_datalist_id_get_data (&error_metadata, domain);
       else
 	info = NULL;
 
-      g_static_rw_lock_reader_unlock (&globals_lock);
+      g_rw_lock_reader_unlock (&globals_lock);
 
       if (info)
 	{
@@ -2766,7 +2766,7 @@ dbus_g_error_domain_register (GQuark                domain,
   g_return_if_fail (code_enum != G_TYPE_INVALID);
   g_return_if_fail (G_TYPE_FUNDAMENTAL (code_enum) == G_TYPE_ENUM);
 
-  g_static_rw_lock_writer_lock (&globals_lock);
+  g_rw_lock_writer_lock (&globals_lock);
 
   if (error_metadata == NULL)
     g_datalist_init (&error_metadata);
@@ -2790,7 +2790,7 @@ dbus_g_error_domain_register (GQuark                domain,
 				   dbus_g_error_info_free);
     }
 
-  g_static_rw_lock_writer_unlock (&globals_lock);
+  g_rw_lock_writer_unlock (&globals_lock);
 }
 
 /* Called when the object is destroyed */
