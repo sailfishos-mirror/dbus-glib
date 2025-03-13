@@ -545,11 +545,11 @@ demarshal_basic (DBusGValueMarshalCtx      *context,
     {
     case DBUS_TYPE_BOOLEAN:
       {
-	dbus_bool_t bool;
+	dbus_bool_t b;
         if (!G_VALUE_HOLDS (value, G_TYPE_BOOLEAN))
           goto invalid_type;
-	dbus_message_iter_get_basic (iter, &bool);
-	g_value_set_boolean (value, bool);
+	dbus_message_iter_get_basic (iter, &b);
+	g_value_set_boolean (value, b);
 	return TRUE;
       }
     case DBUS_TYPE_BYTE:
