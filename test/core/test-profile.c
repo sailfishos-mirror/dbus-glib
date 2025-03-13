@@ -1054,7 +1054,7 @@ do_profile_run (const ProfileRunVTable *vtable)
   
   for (i = 0; i < N_CLIENT_THREADS; i++)
     {
-      g_thread_create (vtable->client_thread_func, (void*) vtable, FALSE, NULL);
+      g_thread_new ("client-thread", vtable->client_thread_func, (void*) vtable);
     }
 
   timer = g_timer_new ();
