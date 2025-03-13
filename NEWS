@@ -1,9 +1,23 @@
 dbus-glib is deprecated, please use GDBus in new GLib-based projects.
 
-dbus-glib 0.114 (UNRELEASED)
+dbus-glib 0.114 (2025-03-13)
 ============================
 
-...
+Enhancements:
+
+• Fix bug reporting URL (Simon McVittie)
+
+• Move license documents to a REUSE-style LICENSES/ directory
+  (Simon McVittie)
+
+• Fix numerous deprecation warnings (Simon McVittie)
+
+Bug fixes:
+
+• Avoid naming a variable 'bool', which is a reserved word in C23 and
+  caused compilation to fail with gcc-15 (Debian#1096507, Simon McVittie)
+
+• CI updates (Simon McVittie)
 
 dbus-glib 0.112 (2021-03-26)
 ============================
