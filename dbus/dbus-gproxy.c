@@ -626,7 +626,7 @@ dbus_g_proxy_manager_unmonitor_name_owner (DBusGProxyManager  *manager,
 {
   DBusGProxyNameOwnerInfo *info;
   const char *owner;
-  gboolean ret;
+  G_GNUC_UNUSED /* if assertions are disabled */ gboolean ret;
 
   ret = dbus_g_proxy_manager_lookup_name_owner (manager, name, &info, &owner);
   g_assert (ret);

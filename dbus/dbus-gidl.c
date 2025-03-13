@@ -459,7 +459,7 @@ free_arg_list (GSList **args_p)
   tmp = *args_p;
   while (tmp != NULL)
     {
-      ArgInfo *ai = tmp->data;
+      G_GNUC_UNUSED /* if assertions are disabled */ ArgInfo *ai = tmp->data;
       g_assert (ai->base.type == INFO_TYPE_ARG);
       arg_info_unref (tmp->data);
       tmp = tmp->next;

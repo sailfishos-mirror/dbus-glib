@@ -653,7 +653,7 @@ object_export_unregister_all (ObjectExport *oe)
 {
   while (oe->registrations != NULL)
     {
-      GSList *old = oe->registrations;
+      G_GNUC_UNUSED /* if assertions are disabled */ GSList *old = oe->registrations;
       ObjectRegistration *o = oe->registrations->data;
 
       dbus_connection_unregister_object_path (

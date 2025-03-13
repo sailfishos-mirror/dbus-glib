@@ -436,7 +436,7 @@ GHashFunc
 _dbus_g_hash_func_from_gtype (GType gtype)
 {
   GHashFunc func = NULL;
-  gboolean ret;
+  G_GNUC_UNUSED /* if assertions are disabled */ gboolean ret;
   ret = hash_func_from_gtype (gtype, &func);
   g_assert (ret != FALSE);
   return func;
