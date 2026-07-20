@@ -46,8 +46,8 @@ typedef struct _DBusGMessage DBusGMessage;
 
 #define DBUS_TYPE_G_CONNECTION   (dbus_g_connection_get_g_type ())
 #define DBUS_TYPE_G_MESSAGE      (dbus_g_message_get_g_type ())
-GType dbus_g_connection_get_g_type   (void) G_GNUC_CONST;
-GType dbus_g_message_get_g_type      (void) G_GNUC_CONST;
+GType dbus_g_connection_get_g_type   (void);
+GType dbus_g_message_get_g_type      (void);
 
 
 DBusGConnection*  dbus_g_connection_ref          (DBusGConnection        *connection);
@@ -198,11 +198,11 @@ GObject *  dbus_g_connection_lookup_g_object   (DBusGConnection       *connectio
 #define DBUS_TYPE_G_STRING_STRING_HASHTABLE (dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, G_TYPE_STRING))
 
 typedef gchar DBusGObjectPath;
-GType        dbus_g_object_path_get_g_type         (void) G_GNUC_CONST;
+GType        dbus_g_object_path_get_g_type         (void);
 #define DBUS_TYPE_G_OBJECT_PATH (dbus_g_object_path_get_g_type ())
 
 typedef gchar DBusGSignature;
-GType        dbus_g_signature_get_g_type           (void) G_GNUC_CONST;
+GType        dbus_g_signature_get_g_type           (void);
 #define DBUS_TYPE_G_SIGNATURE (dbus_g_signature_get_g_type ())
 
 void         dbus_g_object_register_marshaller      (GClosureMarshal  marshaller,
@@ -240,7 +240,7 @@ typedef void (* DBusGProxyCallNotify) (DBusGProxy       *proxy,
 				       DBusGProxyCall   *call_id,
 				       void             *user_data);
 
-GType             dbus_g_proxy_get_type              (void) G_GNUC_CONST;
+GType             dbus_g_proxy_get_type              (void);
 DBusGProxy*       dbus_g_proxy_new_for_name          (DBusGConnection   *connection,
                                                       const char        *name,
                                                       const char        *path,

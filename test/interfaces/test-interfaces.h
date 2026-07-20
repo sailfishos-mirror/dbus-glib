@@ -40,11 +40,11 @@ struct _TestGoodbyeIface {
 	gchar	*(* say_goodbye)	(TestGoodbye *goodbye);
 };
 
-GType    test_hello_get_type		(void) G_GNUC_CONST;
+GType    test_hello_get_type		(void);
 gchar	*test_hello_say_hello		(TestHello *hello);
 void	 test_hello_greetings		(TestHello *hello);
 
-GType    test_goodbye_get_type		(void) G_GNUC_CONST;
+GType    test_goodbye_get_type		(void);
 gchar	*test_goodbye_say_goodbye	(TestGoodbye *goodbye);
 
 #endif

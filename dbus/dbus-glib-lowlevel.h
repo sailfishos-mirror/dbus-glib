@@ -36,8 +36,8 @@ void dbus_set_g_error (GError   **gerror,
 
 #define DBUS_TYPE_CONNECTION      (dbus_connection_get_g_type ())
 #define DBUS_TYPE_MESSAGE         (dbus_message_get_g_type ())
-GType dbus_connection_get_g_type   (void) G_GNUC_CONST;
-GType dbus_message_get_g_type      (void) G_GNUC_CONST;
+GType dbus_connection_get_g_type   (void);
+GType dbus_message_get_g_type      (void);
 
 void            dbus_connection_setup_with_g_main (DBusConnection  *connection,
                                                    GMainContext    *context);
