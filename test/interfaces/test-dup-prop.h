@@ -51,11 +51,11 @@ struct _TestDpObjClass {
 };
 
 
-GType test_a_get_type (void) G_GNUC_CONST;
+GType test_a_get_type (void);
 
-GType test_b_get_type (void) G_GNUC_CONST;
+GType test_b_get_type (void);
 
-GType test_dp_obj_get_type (void) G_GNUC_CONST;
+GType test_dp_obj_get_type (void);
 
 TestDpObj *test_dp_obj_new (void);
 
