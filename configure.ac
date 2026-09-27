@@ -1,7 +1,7 @@
 dnl -*- mode: m4 -*-
 AC_PREREQ(2.52)
 
-AC_INIT([dbus-glib], [0.116],
+AC_INIT([dbus-glib], [0.117],
   [https://gitlab.freedesktop.org/dbus/dbus-glib/-/work_items/new])
 
 AC_CONFIG_AUX_DIR([build-aux])
