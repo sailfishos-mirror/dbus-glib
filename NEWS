@@ -5,8 +5,15 @@ dbus-glib 0.116 (UNRELEASED)
 
 Bug fixes:
 
-• Remove `G_GNUC_CONST` from `_get_type()` functions
+• Remove `G_GNUC_CONST` from `_get_type()` functions.
+  This can cause miscompilation with gcc-16.
   (dbus-glib!7, David North)
+
+• Disable bash completion by default.
+  This is an unmaintained bash completion for dbus-send(1),
+  which is not part of GLib, and apparently doesn't work as intended.
+  For a dbus-send equivalent with shell completion, please try GLib's
+  gdbus(1) or systemd's busctl(1). (dbus-glib!5, Simon McVittie)
 
 dbus-glib 0.114 (2025-03-13)
 ============================
