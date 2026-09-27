@@ -1,7 +1,9 @@
 dbus-glib is deprecated, please use GDBus in new GLib-based projects.
 
-dbus-glib 0.116 (UNRELEASED)
+dbus-glib 0.116 (2026-09-27)
 ============================
+
+The “This is wrong tool! No. Not good. No. Never use this” release.
 
 Bug fixes:
 
